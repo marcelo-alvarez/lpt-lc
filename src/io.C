@@ -29,7 +29,7 @@ void ReadParameterFile()
   void *addr[MAXTAGS];
   char tag[MAXTAGS][50];
 
-  sprintf(fname,clParameters.Paramfile);
+  sprintf(fname,clParameters.ParamFile);
 
   nt=0;
   

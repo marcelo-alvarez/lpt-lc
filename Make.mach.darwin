@@ -14,5 +14,5 @@ GSL_PATH = $(HOME)/gsl-2.4/
 CC = mpicc
 C++ = mpic++
 
-OPTIONS = -w 
+OPTIONS = -w -DDARWIN
 

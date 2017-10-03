@@ -46,10 +46,6 @@ void CommandLine(int argc, char *argv[])
 
   opterr=0;
   
-  if(argc<2) usage();
-
-  sprintf(clParameters.Paramfile,"%s",argv[1]);
-  printf("%s\n",clParameters.Paramfile);
   sprintf(clParameters.DeltaFile,"./input");
   sprintf(clParameters.RedshiftFile,"NULL");
   sprintf(clParameters.HaloFile,"NULL");
@@ -73,7 +69,7 @@ void CommandLine(int argc, char *argv[])
   clParameters.mapcode      = 0; 
   clParameters.zKappa       = 1100;
 
-  while ((c = getopt (argc, argv, "hvD:R:H:F:o:N:B:p:x:y:z:r:l:m:k:")) != -1)
+  while ((c = getopt (argc, argv, "hvP:D:R:H:F:o:N:B:p:x:y:z:r:l:m:k:")) != -1)
     switch (c)
       {
       case 'h':
@@ -82,8 +78,13 @@ void CommandLine(int argc, char *argv[])
       case 'v':
 	clParameters.verbose = 1;
 	break;
+      case 'P':
+	sprintf(clParameters.ParamFile,"%s",optarg);
+	printf("ParamFile = %s\n",clParameters.ParamFile);
+	break;
       case 'D':
 	sprintf(clParameters.DeltaFile,"./%s",optarg);
+	printf("DeltaFile = %s\n",clParameters.DeltaFile);
 	break;
       case 'R':
 	sprintf(clParameters.RedshiftFile,"./%s",optarg);
@@ -153,7 +154,7 @@ void CommandLine(int argc, char *argv[])
 	usage();
       }
 
-  if(clParameters.verbose == 0){
+  if(clParameters.verbose == 5){
     // Redirect stdout to output file
     char fname[256];
     sprintf(fname,"%s.stdout",clParameters.BaseOut);

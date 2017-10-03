@@ -48,8 +48,8 @@ int main(int argc, char *argv[])
   // Allocate arrays
   AllocateArrays();
 
-  ReportMemory("after array allocation",size_fftw,ovrt,oram);
-
+  //ReportMemory("after array allocation",size_fftw,ovrt,oram);
+  printf("clParameters: %d %d %d\n",clParameters.zmask,clParameters.halomask,clParameters.deltain);
   // Read input files
   if(clParameters.zmask==1)
     ReadGridFromFile( zmask, clParameters.RedshiftFile);
@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
     ReadGridFromFile( delta1, clParameters.DeltaFile);
   MPI_Barrier(MPI_COMM_WORLD);
 
+  printf("doing displacements\n");
   // LPT Displacements
   if(clParameters.lptcode>1){
     Displace_2LPT(delta1, delta2, sx1, sy1, sz1, sx2, sy2, sz2);

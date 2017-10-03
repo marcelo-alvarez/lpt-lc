@@ -73,7 +73,7 @@ extern struct Parameter{
 extern struct clParameter{
   int verbose, N, zmask, halomask, deltain, mapcode, lptcode, zKappa;
   float BoxCenter[3], BoxSize, Periodicity, zInit;
-  char Paramfile[256], DeltaFile[256], RedshiftFile[256], 
+  char ParamFile[256], DeltaFile[256], RedshiftFile[256], 
     HaloFile[256], FluxFile[256], BaseOut[256];  
 } clParameters;
 

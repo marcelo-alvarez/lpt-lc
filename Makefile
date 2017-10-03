@@ -14,7 +14,7 @@ GSL_PATH = $(HOME)/gsl-2.4/
 CC = mpicc
 C++ = mpic++
 
-OPTIONS = -w 
+OPTIONS = -w -DDARWIN
 
 #----------------------------------------------------------------------
 # DO NOT MODIFY THIS FILE
@@ -56,8 +56,8 @@ objs = \
 
 bindir = ./bin
 
-COMPILE_FLAGS = $(OPTIMIZE) $(FFTINC) $(GSLINC) $(CFTINC) -DENABLE_FITSIO
-LINK_FLAGS    = $(OPTIMIZE) $(FFTLIB) $(GSLLIB) $(CFTLIB)
+COMPILE_FLAGS = $(OPTIMIZE) $(FFTINC) $(GSLINC) $(CFTINC) $(OPTIONS) -DENABLE_FITSIO 
+LINK_FLAGS    = $(OPTIMIZE) $(FFTLIB) $(GSLLIB) $(CFTLIB) 
 
 EXEC = lin2map
 

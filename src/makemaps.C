@@ -128,15 +128,13 @@ void MakeMaps()
 
   rmax = fminf(rmax,BoxSize);
 
-  if(myid==0) printf("rmin, rmax = %f %f\n",rmin,rmax);
-
   float CellSize = BoxSize / N ;
   float CellVolume = CellSize*CellSize*CellSize;
 
   // before looping over periodic slabs, find out maximum number of 
   // images in each dimension use 15 Gpc as largest possible radius
 
-  int nperiodic = 2;
+  int nperiodic = 1;
 
   double *vec = new double[3];
   double corner[3];
@@ -395,11 +393,11 @@ void MakeMaps()
 
   // report statistics
 
-  if(Parameters.DoMap[KAPCODE]==1 && myid==0) ReportMapStatistics(kapmap,mapsize,"    kappa");
-  if(Parameters.DoMap[KSZCODE]==1 && myid==0) ReportMapStatistics(kszmap,mapsize,"      kSZ");
-  if(Parameters.DoMap[TAUCODE]==1 && myid==0) ReportMapStatistics(taumap,mapsize,"      tau");
-  if(Parameters.DoMap[DTBCODE]==1 && myid==0) ReportMapStatistics(dtbmap,mapsize,"21-cm dTb");
-  if(Parameters.DoMap[CIBCODE]==1 && myid==0) ReportMapStatistics(cibmap,mapsize,"      CIB");
+  if(Parameters.DoMap[KAPCODE]==1 && myid==0) ReportMapStatistics(kapmap,mapsize," kappa    ");
+  if(Parameters.DoMap[KSZCODE]==1 && myid==0) ReportMapStatistics(kszmap,mapsize," kSZ      ");
+  if(Parameters.DoMap[TAUCODE]==1 && myid==0) ReportMapStatistics(taumap,mapsize," tau      ");
+  if(Parameters.DoMap[DTBCODE]==1 && myid==0) ReportMapStatistics(dtbmap,mapsize," 21-cm dTb");
+  if(Parameters.DoMap[CIBCODE]==1 && myid==0) ReportMapStatistics(cibmap,mapsize," CIB      ");
 
 }
 
@@ -418,7 +416,7 @@ void ReportMapStatistics(float *map, int mapsize, char *variable){
   rms  = pow(var,0.5);
 
   // report
-  printf("\n %s mean, rms = %e, %e",variable,mean,rms);
+  printf("\n %s mean, rms = %e, %e\n",variable,mean,rms);
 
 }
 

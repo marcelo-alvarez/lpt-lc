@@ -80,11 +80,9 @@ void CommandLine(int argc, char *argv[])
 	break;
       case 'P':
 	sprintf(clParameters.ParamFile,"%s",optarg);
-	printf("ParamFile = %s\n",clParameters.ParamFile);
 	break;
       case 'D':
 	sprintf(clParameters.DeltaFile,"./%s",optarg);
-	printf("DeltaFile = %s\n",clParameters.DeltaFile);
 	break;
       case 'R':
 	sprintf(clParameters.RedshiftFile,"./%s",optarg);
@@ -154,7 +152,7 @@ void CommandLine(int argc, char *argv[])
 	usage();
       }
 
-  if(clParameters.verbose == 5){
+  if(clParameters.verbose == 0){
     // Redirect stdout to output file
     char fname[256];
     sprintf(fname,"%s.stdout",clParameters.BaseOut);

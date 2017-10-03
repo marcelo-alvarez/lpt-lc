@@ -2,16 +2,17 @@
 # OPTIONS FOR RUNNING ON SCINET-GPC MACHINES
 #----------------------------------------------------------------------
 
-F90 = mpif90
-F77 = mpif77
-OPTIMIZE =  -O4 -w -fpermissive
-FFTWOMP = -lfftw3f_omp
+OPTIMIZE =  -O4 -w 
+
 MODFLAG = -module 
-OMPLIB = -lgomp
-FFTW_PATH = /Users/marcelo/fftw-2.1.5
+OMPLIB = -openmp
+
+FFTW2_PATH = $(HOME)/fftw-2.1.5/
+CFITS_PATH = $(HOME)/cfitsio/
+GSL_PATH = $(HOME)/gsl-2.4/
 
 CC = mpicc
-C++ = mpic++ -DDARWIN
-CCOPTIMIZE = -w
+C++ = mpic++
 
+OPTIONS = -w 
 

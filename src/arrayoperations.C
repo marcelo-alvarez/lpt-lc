@@ -1,5 +1,6 @@
 #include <math.h>
 #include <mpi.h>
+#include <stdio.h>
 
 double GetMeanSigma(float *array, int report, int N, int Nlocal)
 {

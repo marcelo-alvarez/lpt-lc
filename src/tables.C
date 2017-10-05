@@ -8,6 +8,7 @@
 int   RedshiftLnM_nz, RedshiftLnM_nm;
 float RedshiftLnM_zinitial, RedshiftLnM_zfinal; 
 float RedshiftLnM_minitial, RedshiftLnM_mfinal; 
+float OmegaHI(float);
 
 //////////////// [Redshift, ln M] to float //////////////////
 
@@ -306,6 +307,32 @@ void SetRedshift2WKappaTable(float h, float Omegam, float Omegal, float SourceRe
 
 } 
 
+
+//////////////// 21cm kernel table //////////////////
+
+void SetRedshift2WdtbTable(float h, float Omegam, float Omegal, double *table){
+  
+  double H0 = h*100.;       // in km/sec/Mpc
+  double  c = 2.99792458e5; // in km/sec
+  float  r0 = c/H0;         // in Mpc 
+  float nu0 = 1.4e3;        // in MHz
+  float  T0 = 1.8e2 * h;    // in mK
+
+  // Make the table
+
+  float dztable = ((float)ZTABLE_FINAL - ZTABLE_INITIAL) / NZTABLE;
+
+  for(int i=0;i<NZTABLE-1;i++){
+
+    float z   = ZTABLE_INITIAL + (i+0.5)*dztable;
+    float wdtb = T0 * nu0 / r0 * OmegaHI(z);
+
+    table[i] = wdtb;
+
+  }
+
+}
+
 //////////////// P3D table //////////////////
 
 void SetWavenumber2P3DTable(int nk, double *table, double *wntable, double *ps1, double *ps2, double *ps3, double *ook2){
@@ -380,3 +407,7 @@ void ReadFloat2FloatTable(char *filename, int *nvart, float *varmint, float *var
 
 }
 
+//////////////// OmegaHI //////////////////
+float OmegaHI(float z){
+  return 4e-4 * pow((1+z),0.6);
+}

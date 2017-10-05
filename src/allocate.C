@@ -7,10 +7,15 @@ void AllocateArrays()
 
   // Set local slab size
 
-  long N = clParameters.N;
-  long NSide = Parameters.NSide;
-  mapsize = nside2npix(NSide);
+  long      N = clParameters.N;
+  long  NSide = Parameters.NSide;
+  int     Nnu = Parameters.Nnu;
+  float   nu1 = Parameters.nu1;
+  float   nu2 = Parameters.nu2;
 
+  mapsize  = nside2npix(NSide);
+  tmapsize = mapsize * Nnu;
+  
   if(clParameters.N % nproc != 0){
     if(myid==0) printf(
 	        "\n # of slices %d does not divide into # of procs %d, exiting\n\n",
@@ -74,11 +79,11 @@ void AllocateArrays()
     delta2 = delta1;
   }
 
-  if(Parameters.DoMap[KAPCODE]==1); kapmap = (float *)malloc(mapsize*sizeof(float));
-  if(Parameters.DoMap[KSZCODE]==1); kszmap = (float *)malloc(mapsize*sizeof(float));
-  if(Parameters.DoMap[TAUCODE]==1); taumap = (float *)malloc(mapsize*sizeof(float));
-  if(Parameters.DoMap[DTBCODE]==1); dtbmap = (float *)malloc(mapsize*sizeof(float));
-  if(Parameters.DoMap[CIBCODE]==1); cibmap = (float *)malloc(mapsize*sizeof(float));
+  if(Parameters.DoMap[KAPCODE]==1); kapmap = (float *)malloc( mapsize*sizeof(float));
+  if(Parameters.DoMap[KSZCODE]==1); kszmap = (float *)malloc( mapsize*sizeof(float));
+  if(Parameters.DoMap[TAUCODE]==1); taumap = (float *)malloc( mapsize*sizeof(float));
+  if(Parameters.DoMap[CIBCODE]==1); cibmap = (float *)malloc( mapsize*sizeof(float));
+  if(Parameters.DoMap[DTBCODE]==1); dtbmap = (float *)malloc(tmapsize*sizeof(float));
 
   if(myid==0) printf("\n Arrays allocated...");
 

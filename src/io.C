@@ -17,6 +17,7 @@
 #define MAXTAGS 300
 
 void WriteSingleMap(float *, char *);
+void WriteSingletMap(float *, char *);
 
 void ReadParameterFile()
 {
@@ -84,6 +85,18 @@ void ReadParameterFile()
   strcpy(tag[nt], "phi");
   addr[nt] = &Parameters.phi;
   id[nt++] = FLOAT;
+
+  strcpy(tag[nt], "nu1");
+  addr[nt] = &Parameters.nu1;
+  id[nt++] = FLOAT;
+
+  strcpy(tag[nt], "nu2");
+  addr[nt] = &Parameters.nu2;
+  id[nt++] = FLOAT;
+
+  strcpy(tag[nt], "Nnu");
+  addr[nt] = &Parameters.Nnu;
+  id[nt++] = INT;
 
   strcpy(tag[nt], "NPixels");
   addr[nt] = &Parameters.NPixels;
@@ -360,11 +373,11 @@ void WriteMaps()
 
   if(myid==0){
     
-    if(Parameters.DoMap[KAPCODE]) WriteSingleMap(kapmap,"kap");
-    if(Parameters.DoMap[KSZCODE]) WriteSingleMap(kszmap,"ksz");
-    if(Parameters.DoMap[TAUCODE]) WriteSingleMap(taumap,"tau");
-    if(Parameters.DoMap[DTBCODE]) WriteSingleMap(dtbmap,"dtb");
-    if(Parameters.DoMap[CIBCODE]) WriteSingleMap(cibmap,"cib");
+    if(Parameters.DoMap[KAPCODE]) WriteSingleMap( kapmap,"kap");
+    if(Parameters.DoMap[KSZCODE]) WriteSingleMap (kszmap,"ksz");
+    if(Parameters.DoMap[TAUCODE]) WriteSingleMap (taumap,"tau");
+    if(Parameters.DoMap[CIBCODE]) WriteSingleMap (cibmap,"cib");
+    if(Parameters.DoMap[DTBCODE]) WriteSingletMap(dtbmap,"dtb");
 
     if(myid==0) printf("\n Maps written...");
 
@@ -392,4 +405,35 @@ void WriteSingleMap(float *map, char *base){
   sprintf(coord,"C");
   write_healpix_map(map, Parameters.NSide, fname, 1, coord);
 
+}
+
+void WriteSingletMap(float *map, char *base){
+
+  char fname[256], coord[1];
+  FILE *fout;
+  int  mapsize = Parameters.NSide*Parameters.NSide*12;
+
+  float nu, dnu, nu1, nu2;
+  int   Nnu;
+
+  nu1 = Parameters.nu1; nu2 = Parameters.nu2; Nnu = Parameters.Nnu; 
+  dnu = (nu2 - nu1) / Nnu ;
+  printf("got here Nnu = %d\n",Nnu);
+  for(int inu=0;inu<Nnu;inu++){
+
+    nu = nu1 + (inu+0.5) * dnu ;
+    
+    // binary format
+    sprintf(fname,"%s_%s_%6.2f.bin",clParameters.BaseOut,base,nu);
+    printf("%s %f\n",fname,nu);
+    fout = fopen(fname,"wb");   
+    fwrite(&map[inu*mapsize],4,mapsize,fout);
+    fclose(fout);
+    
+    // fits format
+    sprintf(fname,"!%s_%s_%6.2f.fits",clParameters.BaseOut,base,nu);
+    sprintf(coord,"C");
+    write_healpix_map(&map[inu*mapsize], Parameters.NSide, fname, 1, coord);
+
+  }
 }

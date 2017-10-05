@@ -44,7 +44,7 @@ extern int local_nx, local_x_start,
 extern long Nlocal;             // Local slab dimension 
 extern long int size;           // Local slab size 
 extern long int size_fftw;
-extern long mapsize;
+extern long mapsize, tmapsize;
 
 // Arrays
 extern fftw_real *delta, *delta1, *delta2, *sx1, *sy1, *sz1, *sx2, *sy2, *sz2;
@@ -64,6 +64,8 @@ extern struct Halos{
 extern struct Parameter{
   float Omegam, Omegab, Omegal, h, ns, Sigma8, w;
   float BoxSize, zInit, fov, theta, phi;
+  float nu1,nu2;
+  int Nnu;
   float InitialRedshift, FinalRedshift;  
   int N, NSide, NPixels, NRedshifts;
   char DeltaFile[256];

@@ -20,7 +20,7 @@ int local_nx, local_x_start,
 long Nlocal;    // Local slab dimension 
 long int size;      // Local slab size 
 long int size_fftw;
-long mapsize;
+long mapsize, tmapsize;
 
 // Arrays
 fftw_real *delta, *delta1, *delta2, *sx1, *sy1, *sz1, *sx2, *sy2, *sz2;

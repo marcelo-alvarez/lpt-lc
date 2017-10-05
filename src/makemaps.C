@@ -5,7 +5,10 @@
 #include "proto.h"
 #include "allvars.h"
 
-void ReportMapStatistics(float *, int, char *);
+void  ReportMapStatistics(float *, int, char *);
+int   SlabInShell(float **, float, float);
+float Nu2Redshift(float);
+float Redshift2Nu(float);
 
 /* ************* ************* ************* ************* ************* ************* */
 /* ************* ************* ************* ************* ************* ************* */
@@ -21,34 +24,6 @@ void MakeMaps()
   
   double theta,phi;   // angle in cube coordinates
   float deg2rad=2.*M_PI/360.;
-
-  // Local copies of parameters
-
-  float BoxSize=clParameters.BoxSize;
-  float Periodicity=clParameters.Periodicity;
-
-  float x0,y0,z0; // position of corner of box so it spans [x0,y0,z0] to [x0+boxsize,y0+boxsize,z0+boxsize], in Mpc
-  float xc0,yc0,zc0; // position of first box center
-  float xc1,yc1,zc1,xc2,yc2,zc2;
-
-  xc0 = clParameters.BoxCenter[0] ;
-  yc0 = clParameters.BoxCenter[1] ;
-  zc0 = clParameters.BoxCenter[2] ;
- 
-  x0 = clParameters.BoxCenter[0] - BoxSize / 2;
-  y0 = clParameters.BoxCenter[1] - BoxSize / 2;
-  z0 = clParameters.BoxCenter[2] - BoxSize / 2;
-
-  if(myid==0) printf("x0,y0,z0 = %f,%f,%f\n",x0,y0,z0);
-
-  int N=clParameters.N;
-
-  float zmin=Parameters.InitialRedshift;
-  float zmax=Parameters.FinalRedshift;
-
-  int Nxmin = Nlocal * myid;
-  float slabsize = BoxSize / nproc;
-  float slab_xoffset = slabsize * myid ;
 
   float Omegam = Parameters.Omegam;
   float Omegab = Parameters.Omegab;
@@ -70,16 +45,6 @@ void MakeMaps()
 
   float NHe;
 
-  // local copies of maps
-  float *kapmapl, *kszmapl, *taumapl, *dtbmapl, *cibmapl;
-  if(Parameters.DoMap[KAPCODE]==1) kapmapl = (float *)malloc(mapsize*sizeof(float));
-  if(Parameters.DoMap[KSZCODE]==1) kszmapl = (float *)malloc(mapsize*sizeof(float));
-  if(Parameters.DoMap[TAUCODE]==1) taumapl = (float *)malloc(mapsize*sizeof(float));
-  if(Parameters.DoMap[DTBCODE]==1) dtbmapl = (float *)malloc(mapsize*sizeof(float));
-  if(Parameters.DoMap[CIBCODE]==1) cibmapl = (float *)malloc(mapsize*sizeof(float));
-
-  ReportMemory("before map projection",total_local_size,ovrt,oram);
-
   // Set Radius to Redshift Table
   
   Radius2RedshiftTable = new double[NRTABLE];
@@ -96,6 +61,11 @@ void MakeMaps()
   SetRedshift2WKappaTable(h, Omegam, Omegal, zKappa, Redshift2WKappaTable, 
 			  Redshift2RadiusTable);
 
+  // Set Redshift to Wdtb Table
+  
+  Redshift2WdtbTable = new double[NZTABLE];
+  SetRedshift2WdtbTable(h, Omegam, Omegal, Redshift2WdtbTable); 
+
   // Read Redshift to Flux Table
   double *Redshift2FluxPerChiTable;
   int    FluxTable_nz;
@@ -105,6 +75,67 @@ void MakeMaps()
 		       &FluxTable_nz, &FluxTable_zmin, &FluxTable_zmax,
 		       &Redshift2FluxPerChiTable);
   }
+
+  // Local copies of parameters
+
+  float BoxSize     = clParameters.BoxSize;
+  float Periodicity = clParameters.Periodicity;
+
+  float x0,y0,z0; // position of corner of box so it spans [x0,y0,z0] to [x0+boxsize,y0+boxsize,z0+boxsize], in Mpc
+  float xc0,yc0,zc0; // position of first box center
+  float xc1,yc1,zc1,xc2,yc2,zc2;
+
+  // set shell and periodicity
+  float nu1  = Parameters.nu1;
+  float nu2  = Parameters.nu2;
+  int   Nnu  = Parameters.Nnu;
+  float dnu  = (nu2-nu1)/Nnu;
+
+  float zmin = Parameters.InitialRedshift;
+  float zmax = Parameters.FinalRedshift;
+  if (clParameters.mapcode == 8){
+    zmax = Nu2Redshift(nu1);
+    zmin = Nu2Redshift(nu2);
+    if(myid==0) printf("%f %f %f %f\n",zmin,zmax,nu1,nu2);
+  }
+  float rmin = Redshift2Float(zmin,Redshift2RadiusTable);
+  float rmax = Redshift2Float(zmax,Redshift2RadiusTable);
+  int nperiodic = (int)(2*rmax / BoxSize + 2);
+  int tiledbox = nperiodic * BoxSize ; 
+  printf("\n rmin = %f rmax = %f nperiodic = %d BoxSize = %f\n",rmin,rmax,nperiodic,BoxSize);
+
+  x0  = - tiledbox / 2     ; y0  = - tiledbox / 2     ; z0  = - tiledbox / 2     ;
+  xc0 = x0 + BoxSize / 2   ; yc0 = y0 + BoxSize / 2   ; zc0 = z0 + BoxSize / 2 ; 
+  
+  /*
+  xc0 = clParameters.BoxCenter[0] ;
+  yc0 = clParameters.BoxCenter[1] ;
+  zc0 = clParameters.BoxCenter[2] ;
+ 
+  x0 = clParameters.BoxCenter[0] - BoxSize / 2;
+  y0 = clParameters.BoxCenter[1] - BoxSize / 2;
+  z0 = clParameters.BoxCenter[2] - BoxSize / 2;
+  */
+  
+  if(myid==0) printf("x0,y0,z0 = %f,%f,%f\n",x0,y0,z0);
+
+  int N=clParameters.N;
+
+  // if (nperiodic <= 2) rmax = fminf(rmax,BoxSize);
+  
+  int Nxmin = Nlocal * myid;
+  float slabsize = BoxSize / nproc;
+  float slab_xoffset = slabsize * myid ;
+
+  // local copies of maps
+  float *kapmapl, *kszmapl, *taumapl, *dtbmapl, *cibmapl;
+  if(Parameters.DoMap[KAPCODE]==1) kapmapl = (float *)malloc( mapsize*sizeof(float));
+  if(Parameters.DoMap[KSZCODE]==1) kszmapl = (float *)malloc( mapsize*sizeof(float));
+  if(Parameters.DoMap[TAUCODE]==1) taumapl = (float *)malloc( mapsize*sizeof(float));
+  if(Parameters.DoMap[CIBCODE]==1) cibmapl = (float *)malloc( mapsize*sizeof(float));
+  if(Parameters.DoMap[DTBCODE]==1) dtbmapl = (float *)malloc(tmapsize*sizeof(float));
+
+  ReportMemory("before map projection",total_local_size,ovrt,oram);
 
   if(myid==0){
     float dztable = ((float)ZTABLE_FINAL - ZTABLE_INITIAL) / NZTABLE;    
@@ -123,21 +154,17 @@ void MakeMaps()
     fclose(wfile);
   }
 
-  float rmin=Redshift2Float(zmin,Redshift2RadiusTable);
-  float rmax=Redshift2Float(zmax,Redshift2RadiusTable);
-
-  rmax = fminf(rmax,BoxSize);
-
   float CellSize = BoxSize / N ;
   float CellVolume = CellSize*CellSize*CellSize;
 
   // before looping over periodic slabs, find out maximum number of 
   // images in each dimension use 15 Gpc as largest possible radius
 
-  int nperiodic = 1;
-
   double *vec = new double[3];
   double corner[3];
+  float **bb = new float*[2];
+  bb[0] = new float[3];
+  bb[1] = new float[3];
 
   // slab corners
 
@@ -177,6 +204,13 @@ void MakeMaps()
     xs2 = xs1 + slabsize;
     ys2 = ys1 + BoxSize;
     zs2 = zs1 + BoxSize;
+
+    bb[0][0]=xs1; bb[0][1]=ys1; bb[0][2]=zs1;
+    bb[1][0]=xs2; bb[1][1]=ys2; bb[1][2]=zs2;
+    
+    // if slab does not intersect shell, go to next slab
+    if (SlabInShell(bb, rmin, rmax)==0) continue;
+    printf("doing slab %d %d %d\n",ip,jp,kp);
 
     // Set mask to false
     for(int ic=0;ic<Nlocal;ic++){
@@ -303,9 +337,7 @@ void MakeMaps()
       int index_dv = ic*N*(N+2) + jc*(N+2) + kc;
 
       // CMB Lensing redshift factor
-      float cibfac;
       float kapfac;
-      float Wcib;
       float Wkap;
       if(Parameters.DoMap[KAPCODE]==1){
 	Wkap = Redshift2Float(zcur,Redshift2WKappaTable);
@@ -314,20 +346,36 @@ void MakeMaps()
       }
 
       // CIB redshift factor
+      float cibfac;
+      float Wcib;
       if(Parameters.DoMap[CIBCODE]==1){
 	Wcib = Float2Float(zcur,FluxTable_nz,FluxTable_zmin,FluxTable_zmax,
 			   &Redshift2FluxPerChiTable,0.0);
 	cibfac = Wcib * 
 	  pow(CellSize,3) / pow(r,2) * mapsize / 4. / 3.14159;
-      }      
+      }
 
+      // 21cm redshift factors
+      float dtbfac;
+      float   Wdtb;
+      float     nu;
+      int      inu;
+      if(Parameters.DoMap[DTBCODE]==1){
+	Wdtb   = Redshift2Float(zcur,Redshift2WdtbTable);
+	nu     = Redshift2Nu(zcur);
+	dtbfac = Wdtb *
+	  pow(CellSize,3) / pow(r,2) * mapsize / 4. / 3.14159 / dnu;
+	inu    = (int)((nu-nu1)/dnu);
+	if(inu<0 || inu>= Nnu){ inu=0; dtbfac = 0; }
+      }
+      
       float D      = growth(zcur,Parameters.Omegam,Parameters.Omegal, Parameters.w)/DInit;
       float D2     = 3. / 7. * D * D;
 
       if(iLPT < 1) D  = 0;
       if(iLPT < 2) D2 = 0;
 
-      long pixel;
+      long pixel, tpixel;
       
       float xE,yE,zE;
       // Displacements
@@ -357,10 +405,11 @@ void MakeMaps()
       
       // Add contribution to Eulerian point      
       vec[2] = xE; vec[1] = yE; vec[0] = zE; // x-z flipped
-      vec2pix_nest(Parameters.NSide, vec, &pixel);
-      if(Parameters.DoMap[KAPCODE]==1) kapmapl[pixel] += kapfac ; // * (1-halomask[index_dv]);
-      if(Parameters.DoMap[CIBCODE]==1) cibmapl[pixel] += cibfac ; // * (1-halomask[index_dv]);
-
+      vec2pix_nest(Parameters.NSide, vec, &pixel); tpixel = pixel + inu * mapsize;      
+      if(Parameters.DoMap[KAPCODE]==1) kapmapl[ pixel] += kapfac ; // * (1-halomask[index_dv]);
+      if(Parameters.DoMap[CIBCODE]==1) cibmapl[ pixel] += cibfac ; // * (1-halomask[index_dv]);
+      if(Parameters.DoMap[DTBCODE]==1) dtbmapl[tpixel] += dtbfac ; // * (1-halomask[index_dv]);
+      
     }
     }
     }    
@@ -386,26 +435,52 @@ void MakeMaps()
     MPI_Allreduce(kszmapl, kszmap, mapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
   if(Parameters.DoMap[TAUCODE]==1)
     MPI_Allreduce(taumapl, taumap, mapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
-  if(Parameters.DoMap[DTBCODE]==1)
-    MPI_Allreduce(dtbmapl, dtbmap, mapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
   if(Parameters.DoMap[CIBCODE]==1)
     MPI_Allreduce(cibmapl, cibmap, mapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+  if(Parameters.DoMap[DTBCODE]==1)
+    MPI_Allreduce(dtbmapl, dtbmap, tmapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 
   // report statistics
 
-  if(Parameters.DoMap[KAPCODE]==1 && myid==0) ReportMapStatistics(kapmap,mapsize," kappa    ");
-  if(Parameters.DoMap[KSZCODE]==1 && myid==0) ReportMapStatistics(kszmap,mapsize," kSZ      ");
-  if(Parameters.DoMap[TAUCODE]==1 && myid==0) ReportMapStatistics(taumap,mapsize," tau      ");
-  if(Parameters.DoMap[DTBCODE]==1 && myid==0) ReportMapStatistics(dtbmap,mapsize," 21-cm dTb");
-  if(Parameters.DoMap[CIBCODE]==1 && myid==0) ReportMapStatistics(cibmap,mapsize," CIB      ");
+  if(Parameters.DoMap[KAPCODE]==1 && myid==0) ReportMapStatistics(kapmap, mapsize," kappa    ");
+  if(Parameters.DoMap[KSZCODE]==1 && myid==0) ReportMapStatistics(kszmap, mapsize," kSZ      ");
+  if(Parameters.DoMap[TAUCODE]==1 && myid==0) ReportMapStatistics(taumap, mapsize," tau      ");
+  if(Parameters.DoMap[CIBCODE]==1 && myid==0) ReportMapStatistics(cibmap, mapsize," CIB      ");
+  if(Parameters.DoMap[DTBCODE]==1 && myid==0) ReportMapStatistics(dtbmap,tmapsize," 21-cm dTb");
 
 }
 
-void ReportMapStatistics(float *map, int mapsize, char *variable){
+int SlabInShell(float **bb, float rmin, float rmax){
+  int InShell = 0;
+  for(int i=0;i<2;i++){
+  for(int j=0;j<2;j++){
+  for(int k=0;k<2;k++){
+    float rc = pow((pow(bb[i][0],2)+pow(bb[j][1],2)+pow(bb[k][2],2)),0.5);
+    if(rc>rmin && rc<rmax) return 1;
+  }
+  }
+  }
 
+  return 0;
+  
+}
+
+float Nu2Redshift(float nu){
+  float nu0 = 1.4e3;
+  return nu0/nu - 1;
+}
+
+float Redshift2Nu(float z){
+  float nu0 = 1.4e3;
+  return nu0/(1+z);
+}
+
+
+void ReportMapStatistics(float *map, int mapsize, char *variable){
+  
   int i;
   double  mean, var, rms, sum;
-
+  
   // mean
   sum=0; for(i=0;i<mapsize;i++) sum += map[i];
   mean = sum / mapsize;

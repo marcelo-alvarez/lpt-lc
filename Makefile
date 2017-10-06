@@ -2,6 +2,7 @@
 # OPTIONS FOR RUNNING ON SCINET-GPC MACHINES
 #----------------------------------------------------------------------
 
+
 OPTIMIZE =  -O4 -w 
 
 MODFLAG = -module 

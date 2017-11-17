@@ -328,11 +328,7 @@ void SetRedshift2WdtbTable(float h, float Omegab, float Omegam, float Omegal, do
     
 
     float z   = ZTABLE_INITIAL + (i+0.5)*dztable;
-    if(evol_flag > 0){
-      Tbmean = T0 * OmegaHI(z, Omegab, YHe);
-    } else{
-      z = 0;
-    }
+    if(evol_flag > 0) Tbmean = T0 * OmegaHI(z, Omegab, YHe);
     float wdtb = Tbmean * nu0 / r0 * sqrt(Omegam*pow((1+z),3)+Omegal) ;
     table[i] = wdtb;
   }

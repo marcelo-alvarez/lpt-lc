@@ -210,7 +210,6 @@ void MakeMaps()
     
     // if slab does not intersect shell, go to next slab
     if (SlabInShell(bb, rmin, rmax)==0) continue;
-    printf("doing slab %d %d %d\n",ip,jp,kp);
 
     // Set mask to false
     for(int ic=0;ic<Nlocal;ic++){
@@ -362,6 +361,7 @@ void MakeMaps()
       int      inu;
       if(Parameters.DoMap[DTBCODE]==1){
 	Wdtb   = Redshift2Float(zcur,Redshift2WdtbTable);
+	if(clParameters.evolve == 0) Wdtb = 1;
 	nu     = Redshift2Nu(zcur);
 	dtbfac = Wdtb *
 	  pow(CellSize,3) / pow(r,2) * mapsize / 4. / 3.14159 / dnu;
@@ -370,6 +370,7 @@ void MakeMaps()
       }
       
       float D      = growth(zcur,Parameters.Omegam,Parameters.Omegal, Parameters.w)/DInit;
+      if(clParameters.evolve == 0) D = 1;
       float D2     = 3. / 7. * D * D;
 
       if(iLPT < 1) D  = 0;

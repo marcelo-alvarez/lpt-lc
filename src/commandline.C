@@ -24,8 +24,9 @@ void usage(){
     printf("\n   -z center z in Mpc    [default = 100 Mpc]");
     printf("\n   -r initial redshift   [default = 0]");
     printf("\n   -l LPT code, [l]LPT   [default = 1 --> 1LPT]");
-    printf("\n   -m binary map code (e.g. kap=0 --> no ; kap=1 --> yes)");
     printf("\n   -k lensing source z   [default = 1100]");
+    printf("\n   -e evolution code     [default = 1 --> evolution");
+    printf("\n   -m binary map code (e.g. kap=0 --> no ; kap=1 --> yes)");
     printf("\n       = kap * 1  (CMB lensing)");
     printf("\n       + ksz * 2  (kinetic SZ) ");
     printf("\n       + tau * 4  (tau_es)     ");
@@ -68,8 +69,9 @@ void CommandLine(int argc, char *argv[])
   clParameters.lptcode      = 1; 
   clParameters.mapcode      = 0; 
   clParameters.zKappa       = 1100;
-
-  while ((c = getopt (argc, argv, "hvP:D:R:H:F:o:N:B:p:x:y:z:r:l:m:k:")) != -1)
+  clParameters.evolve       = 1;
+  
+  while ((c = getopt (argc, argv, "hvP:D:R:H:F:o:N:B:p:x:y:z:r:l:m:k:e:")) != -1)
     switch (c)
       {
       case 'h':
@@ -127,6 +129,9 @@ void CommandLine(int argc, char *argv[])
 	break;
       case 'k':
 	clParameters.zKappa = atof(optarg);
+	break;
+      case 'e':
+	clParameters.evolve = atoi(optarg);
 	break;
       case '?':
 	if (optopt == 'i'){

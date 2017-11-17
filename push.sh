@@ -6,5 +6,5 @@ if [ "$#" -gt 0 ]; then
 else
     git commit -a
 fi
-git push -u origin master
+git push origin master
 

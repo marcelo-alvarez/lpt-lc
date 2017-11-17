@@ -418,14 +418,12 @@ void WriteSingletMap(float *map, char *base){
 
   nu1 = Parameters.nu1; nu2 = Parameters.nu2; Nnu = Parameters.Nnu; 
   dnu = (nu2 - nu1) / Nnu ;
-  printf("got here Nnu = %d\n",Nnu);
   for(int inu=0;inu<Nnu;inu++){
 
     nu = nu1 + (inu+0.5) * dnu ;
     
     // binary format
     sprintf(fname,"%s_%s_%6.2f.bin",clParameters.BaseOut,base,nu);
-    printf("%s %f\n",fname,nu);
     fout = fopen(fname,"wb");   
     fwrite(&map[inu*mapsize],4,mapsize,fout);
     fclose(fout);

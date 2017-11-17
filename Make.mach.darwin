@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------
-# OPTIONS FOR RUNNING ON SCINET-GPC MACHINES
+# OPTIONS FOR RUNNING ON DARWIN MAC OS X MACHINES
 #----------------------------------------------------------------------
 
 OPTIMIZE =  -O4 -w 

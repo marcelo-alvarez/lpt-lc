@@ -12,7 +12,7 @@ float Float2Float(float, int, float, float, double **, float);
 float Wavenumber2Float(int, float, double *, double *);
 float Wavenumber2FloatLogSpace(int, float, float, float, double *);
 void SetRedshift2WKappaTable(float, float, float, float, double *, double *);
-void SetRedshift2WdtbTable(float, float, float, double *);
+void SetRedshift2WdtbTable(float, float, float, float, double *, int);
 void SetRedshift2RadiusTable(float, float, float, double *);
 void SetRadius2RedshiftTable(float, float, float, double *);
 void SetRedshift2HistoryTable(int, int, float *, double *);

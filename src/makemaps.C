@@ -64,7 +64,7 @@ void MakeMaps()
   // Set Redshift to Wdtb Table
   
   Redshift2WdtbTable = new double[NZTABLE];
-  SetRedshift2WdtbTable(h, Omegam, Omegal, Redshift2WdtbTable); 
+  SetRedshift2WdtbTable(h, Omegab, Omegam, Omegal, Redshift2WdtbTable, clParameters.evolve); 
 
   // Read Redshift to Flux Table
   double *Redshift2FluxPerChiTable;
@@ -361,7 +361,6 @@ void MakeMaps()
       int      inu;
       if(Parameters.DoMap[DTBCODE]==1){
 	Wdtb   = Redshift2Float(zcur,Redshift2WdtbTable);
-	if(clParameters.evolve == 0) Wdtb = 1;
 	nu     = Redshift2Nu(zcur);
 	dtbfac = Wdtb *
 	  pow(CellSize,3) / pow(r,2) * mapsize / 4. / 3.14159 / dnu;

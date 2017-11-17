@@ -8,7 +8,7 @@
 int   RedshiftLnM_nz, RedshiftLnM_nm;
 float RedshiftLnM_zinitial, RedshiftLnM_zfinal; 
 float RedshiftLnM_minitial, RedshiftLnM_mfinal; 
-float OmegaHI(float);
+float OmegaHI(float, float, float);
 
 //////////////// [Redshift, ln M] to float //////////////////
 
@@ -310,25 +310,31 @@ void SetRedshift2WKappaTable(float h, float Omegam, float Omegal, float SourceRe
 
 //////////////// 21cm kernel table //////////////////
 
-void SetRedshift2WdtbTable(float h, float Omegam, float Omegal, double *table){
+void SetRedshift2WdtbTable(float h, float Omegab, float Omegam, float Omegal, double *table, int evol_flag){
   
   double H0 = h*100.;       // in km/sec/Mpc
   double  c = 2.99792458e5; // in km/sec
   float  r0 = c/H0;         // in Mpc 
   float nu0 = 1.4e3;        // in MHz
   float  T0 = 1.8e2 * h;    // in mK
+  float YHe = 0.25;
 
   // Make the table
 
   float dztable = ((float)ZTABLE_FINAL - ZTABLE_INITIAL) / NZTABLE;
 
+  float Tbmean = 1;
   for(int i=0;i<NZTABLE-1;i++){
+    
 
     float z   = ZTABLE_INITIAL + (i+0.5)*dztable;
-    float wdtb = T0 * nu0 / r0 * sqrt(Omegam*pow((1+z),3)+Omegal) * OmegaHI(z);
-
+    if(evol_flag > 0){
+      Tbmean = T0 * OmegaHI(z, Omegab, YHe);
+    } else{
+      z = 0;
+    }
+    float wdtb = Tbmean * nu0 / r0 * sqrt(Omegam*pow((1+z),3)+Omegal) ;
     table[i] = wdtb;
-
   }
 
 }
@@ -408,6 +414,10 @@ void ReadFloat2FloatTable(char *filename, int *nvart, float *varmint, float *var
 }
 
 //////////////// OmegaHI //////////////////
-float OmegaHI(float z){
-  return 4e-4 * pow((1+z),0.6);
+float OmegaHI(float z, float Omegab, float YHe){
+  if(z<6){
+    return 4e-4 * pow((1+z),0.6);
+  } else{
+    return (1-YHe)*Omegab;
+  }
 }

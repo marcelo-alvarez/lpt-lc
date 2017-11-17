@@ -325,7 +325,7 @@ void SetRedshift2WdtbTable(float h, float Omegam, float Omegal, double *table){
   for(int i=0;i<NZTABLE-1;i++){
 
     float z   = ZTABLE_INITIAL + (i+0.5)*dztable;
-    float wdtb = T0 * nu0 / r0 * OmegaHI(z);
+    float wdtb = T0 * nu0 / r0 * sqrt(Omegam*pow((1+z),3)+Omegal) * OmegaHI(z);
 
     table[i] = wdtb;
 

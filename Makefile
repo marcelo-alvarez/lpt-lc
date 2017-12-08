@@ -1,21 +1,23 @@
 #----------------------------------------------------------------------
-# OPTIONS FOR RUNNING ON SCINET-GPC MACHINES
+# OPTIONS FOR RUNNING ON OSCAR MACHINES
+#  Be sure to load module mpich/3.1.1 and gsl/2.3 before running Make!
+#  Where are the libraries for gsl?
 #----------------------------------------------------------------------
-
 
 OPTIMIZE =  -O4 -w 
 
 MODFLAG = -module 
 OMPLIB = -openmp
 
-FFTW2_PATH = $(HOME)/fftw-2.1.5/
-CFITS_PATH = $(HOME)/cfitsio/
-GSL_PATH = $(HOME)/gsl-2.4/
+FFTW2_PATH = $(HOME)/21cmSimulation/C/fftw-2.1.5
+CFITS_PATH = $(HOME)/21cmSimulation/C/cfitsio
+GSL_PATH = $(HOME)/21cmSimulation/C/gsl-2.4
+CURL_PATH = /gpfs/runtime/opt/curl/7.50.3
 
 CC = mpicc
 C++ = mpic++
 
-OPTIONS = -w -DDARWIN
+OPTIONS = -w
 
 #----------------------------------------------------------------------
 # DO NOT MODIFY THIS FILE
@@ -33,8 +35,11 @@ CFTINC = -I$(CFITS_PATH)/include
 GSLLIB = -L$(GSL_PATH)/lib -lgsl -lgslcblas
 GSLINC = -I$(GSL_PATH)/include
 
-LIB = $FFTLIB $CFTLIB $GSLLIB
-INC = $FFTINC $CFTINC $GSLINC
+CURLINC = -I$(CURL_PATH)/include
+CURLLIB = -L$(CURL_PATH)/lib -lcurl
+
+LIB = $FFTLIB $CFTLIB $GSLLIB $CURLLIB
+INC = $FFTINC $CFTINC $GSLINC $CURLINC
  
 # OBJECT FILES
 srcdir  = ./src
@@ -57,8 +62,8 @@ objs = \
 
 bindir = ./bin
 
-COMPILE_FLAGS = $(OPTIMIZE) $(FFTINC) $(GSLINC) $(CFTINC) $(OPTIONS) -DENABLE_FITSIO 
-LINK_FLAGS    = $(OPTIMIZE) $(FFTLIB) $(GSLLIB) $(CFTLIB) 
+COMPILE_FLAGS = $(OPTIMIZE) $(FFTINC) $(GSLINC) $(CFTINC) $(OPTIONS) $(CURLINC) -DENABLE_FITSIO 
+LINK_FLAGS    = $(OPTIMIZE) $(FFTLIB) $(GSLLIB) $(CFTLIB) $(CURLLIB)
 
 EXEC = lin2map
 

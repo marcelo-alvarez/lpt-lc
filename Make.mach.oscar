@@ -1,0 +1,20 @@
+#----------------------------------------------------------------------
+# OPTIONS FOR RUNNING ON OSCAR MACHINES
+#  Be sure to load module mpich/3.1.1 and gsl/2.3 before running Make!
+#----------------------------------------------------------------------
+
+OPTIMIZE =  -O4 -w 
+
+MODFLAG = -module 
+OMPLIB = -openmp
+
+FFTW2_PATH = $(HOME)/21cmSimulation/C/fftw-2.1.5
+CFITS_PATH = $(HOME)/21cmSimulation/C/cfitsio
+GSL_PATH = $(HOME)/21cmSimulation/C/gsl-2.4
+CURL_PATH = /gpfs/runtime/opt/curl/7.50.3/include
+
+CC = mpicc
+C++ = mpic++
+
+OPTIONS = -w
+

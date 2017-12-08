@@ -209,8 +209,10 @@ void MakeMaps()
     bb[1][0]=xs2; bb[1][1]=ys2; bb[1][2]=zs2;
     
     // if slab does not intersect shell, go to next slab
-    if (SlabInShell(bb, rmin, rmax)==0) continue;
-
+    if (SlabInShell(bb, rmin, rmax)==0){
+        if (myid==0) printf("Skipping %d %d %d\n",ip,jp,kp);
+	continue;
+    }
     // Set mask to false
     for(int ic=0;ic<Nlocal;ic++){
       for(int jc=0;     jc<N;jc++){
@@ -221,7 +223,7 @@ void MakeMaps()
       }
     }
     if(myid==0) printf("\n Image %d %d %d\n",ip,jp,kp);
-    MPI_Barrier(MPI_COMM_WORLD);
+    //MPI_Barrier(MPI_COMM_WORLD);
     if(myid==0) printf("  Masking %d halos\n",Nhalos);
     // Loop over halos and mask
     float fcoll=0;
@@ -440,6 +442,8 @@ void MakeMaps()
   if(Parameters.DoMap[DTBCODE]==1)
     MPI_Allreduce(dtbmapl, dtbmap, tmapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 
+  if(myid==0) printf("\n Sum process contributions complete\n");
+
   // report statistics
 
   if(Parameters.DoMap[KAPCODE]==1 && myid==0) ReportMapStatistics(kapmap, mapsize," kappa    ");
@@ -447,6 +451,8 @@ void MakeMaps()
   if(Parameters.DoMap[TAUCODE]==1 && myid==0) ReportMapStatistics(taumap, mapsize," tau      ");
   if(Parameters.DoMap[CIBCODE]==1 && myid==0) ReportMapStatistics(cibmap, mapsize," CIB      ");
   if(Parameters.DoMap[DTBCODE]==1 && myid==0) ReportMapStatistics(dtbmap,tmapsize," 21-cm dTb");
+
+  if (myid==0) printf("\n Report map stats complete \n");
 
 }
 

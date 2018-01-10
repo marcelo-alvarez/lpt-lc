@@ -79,12 +79,13 @@ void AllocateArrays()
     delta2 = delta1;
   }
 
-  if(Parameters.DoMap[KAPCODE]==1); kapmap = (float *)malloc( mapsize*sizeof(float));
-  if(Parameters.DoMap[KSZCODE]==1); kszmap = (float *)malloc( mapsize*sizeof(float));
-  if(Parameters.DoMap[TAUCODE]==1); taumap = (float *)malloc( mapsize*sizeof(float));
-  if(Parameters.DoMap[CIBCODE]==1); cibmap = (float *)malloc( mapsize*sizeof(float));
-  if(Parameters.DoMap[DTBCODE]==1); dtbmap = (float *)malloc(tmapsize*sizeof(float));
-
+  if (myid==0){
+    if(Parameters.DoMap[KAPCODE]==1); kapmap = (float *)malloc( mapsize*sizeof(float));
+    if(Parameters.DoMap[KSZCODE]==1); kszmap = (float *)malloc( mapsize*sizeof(float));
+    if(Parameters.DoMap[TAUCODE]==1); taumap = (float *)malloc( mapsize*sizeof(float));
+    if(Parameters.DoMap[CIBCODE]==1); cibmap = (float *)malloc( mapsize*sizeof(float));
+    if(Parameters.DoMap[DTBCODE]==1); dtbmap = (float *)malloc(tmapsize*sizeof(float));
+  }
   if(myid==0) printf("\n Arrays allocated...");
 
 }

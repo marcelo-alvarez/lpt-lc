@@ -210,7 +210,7 @@ void MakeMaps()
     
     // if slab does not intersect shell, go to next slab
     if (SlabInShell(bb, rmin, rmax)==0){
-        if (myid==0) printf("Skipping %d %d %d\n",ip,jp,kp);
+//        if (myid==0) printf("Skipping %d %d %d\n",ip,jp,kp);
 	continue;
     }
     // Set mask to false
@@ -432,15 +432,15 @@ void MakeMaps()
   // sum process contributions
 
   if(Parameters.DoMap[KAPCODE]==1)
-    MPI_Allreduce(kapmapl, kapmap, mapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+    MPI_Reduce(kapmapl, kapmap, mapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
   if(Parameters.DoMap[KSZCODE]==1)
-    MPI_Allreduce(kszmapl, kszmap, mapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+    MPI_Reduce(kszmapl, kszmap, mapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
   if(Parameters.DoMap[TAUCODE]==1)
-    MPI_Allreduce(taumapl, taumap, mapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+    MPI_Reduce(taumapl, taumap, mapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
   if(Parameters.DoMap[CIBCODE]==1)
-    MPI_Allreduce(cibmapl, cibmap, mapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+    MPI_Reduce(cibmapl, cibmap, mapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
   if(Parameters.DoMap[DTBCODE]==1)
-    MPI_Allreduce(dtbmapl, dtbmap, tmapsize, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+    MPI_Reduce(dtbmapl, dtbmap, tmapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
 
   if(myid==0) printf("\n Sum process contributions complete\n");
 

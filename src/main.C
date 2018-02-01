@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
   // Read parameter file
   ReadParameterFile();
   int N=clParameters.N;
+  int Nchunk = clParameters.Nchunk;
   Parameters.N = N;
 
   // Growth factor at initial time
@@ -67,15 +68,36 @@ int main(int argc, char *argv[])
   }
   if(clParameters.lptcode>0) Displace_1LPT(delta1, sx1, sy1, sz1);  
   MPI_Barrier(MPI_COMM_WORLD);
- 
-  // Make maps
-  MakeMaps();
-  MPI_Barrier(MPI_COMM_WORLD);
 
-  // Write maps
-  WriteMaps();
-  MPI_Barrier(MPI_COMM_WORLD);
-  
+  double chunksize = floor(Parameters.Nnu/Nchunk);
+  int Nnu_tot = Parameters.Nnu;
+  float nu1 = Parameters.nu1;
+  float nu2 = Parameters.nu2;
+  float dnu = (nu2-nu1)/Nnu_tot;
+
+  for (int ci=0; ci<Nchunk; ci++){
+    // Make maps
+//    if (myid == 0){
+       Parameters.nu1 = nu1 + ci*(chunksize+1)*dnu;
+       Parameters.nu2 = Parameters.nu1 + chunksize*dnu;
+       if (Parameters.nu2 >= nu2){
+           Parameters.nu2 = nu2;
+           Parameters.Nnu = (int)((nu2 - Parameters.nu1)/dnu);
+       }
+       else{
+           Parameters.Nnu = chunksize;
+       }
+      if (myid==0){
+       printf("\n Chunk %d \n",ci);
+       printf("nu1=%f, nu2=%f, dnu=%f, nu0 = %f, numax=%f , Nnu=%d, chunksize=%f \n",Parameters.nu1,Parameters.nu2,dnu, nu1, nu2,Parameters.Nnu, chunksize);
+    } // myid==0
+    MakeMaps();
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    // Write maps
+    WriteMaps();
+    MPI_Barrier(MPI_COMM_WORLD);
+  }
   // Finalize and return
   MPI_Finalize();  if(myid==0) printf("\n\n"); 
   

@@ -9,12 +9,13 @@ void AllocateArrays()
 
   long      N = clParameters.N;
   long  NSide = Parameters.NSide;
+  int   Nchunk = clParameters.Nchunk;
   int     Nnu = Parameters.Nnu;
   float   nu1 = Parameters.nu1;
   float   nu2 = Parameters.nu2;
 
   mapsize  = nside2npix(NSide);
-  tmapsize = mapsize * Nnu;
+  tmapsize = mapsize * (int)ceil(Nnu/Nchunk);
   
   if(clParameters.N % nproc != 0){
     if(myid==0) printf(
@@ -86,6 +87,7 @@ void AllocateArrays()
     if(Parameters.DoMap[CIBCODE]==1); cibmap = (float *)malloc( mapsize*sizeof(float));
     if(Parameters.DoMap[DTBCODE]==1); dtbmap = (float *)malloc(tmapsize*sizeof(float));
   }
+
   if(myid==0) printf("\n Arrays allocated...");
 
 }

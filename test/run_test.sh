@@ -24,8 +24,8 @@ testname='dtb_static'
 
 echo '------- 21cm test no evolution high-z --------'
 mapnum=8
-testname='dtb_static'
-mpirun -np $nproc ../bin/lin2map -P param.lin2map_hiz -v -D $testdata -N 256 -B 500 -p 500 -x -250 -y -250 -z -250 -m $mapnum -o $testname -e 0 
+nchunk=5
+mpirun -n $nproc ../bin/lin2map -P param.lin2map -v -D $testdata -C $nchunk -N 256 -B 500 -p 500 -x -250 -y -250 -z -250 -m $mapnum -o $testname -e 0 
 
 
 

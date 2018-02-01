@@ -17,6 +17,7 @@ void usage(){
     printf("\n   -F flux(z,M) file     [default = 'NULL']");
     printf("\n   -o Output base name   [default = 'map']");
     printf("\n   -N grid dimension     [default = 512]");
+    printf("\n   -C Number of chunks   [default = 1]");
     printf("\n   -B box size in Mpc    [default = 100 Mpc]");
     printf("\n   -p periodicity in Mpc [default = 100 Mpc]");
     printf("\n   -x center x in Mpc    [default = 100 Mpc]");
@@ -60,6 +61,7 @@ void CommandLine(int argc, char *argv[])
   clParameters.zmask        = 0;
   clParameters.halomask     = 0;  
   clParameters.BoxSize      = 100;
+  clParameters.Nchunk       = 1;
   clParameters.Periodicity  = 100;
   clParameters.BoxCenter[0] = 0;
   clParameters.BoxCenter[1] = 0;
@@ -71,7 +73,7 @@ void CommandLine(int argc, char *argv[])
   clParameters.zKappa       = 1100;
   clParameters.evolve       = 1;
   
-  while ((c = getopt (argc, argv, "hvP:D:R:H:F:o:N:B:p:x:y:z:r:l:m:k:e:")) != -1)
+  while ((c = getopt (argc, argv, "hvP:D:R:H:F:o:N:B:p:C:x:y:z:r:l:m:k:e:")) != -1)
     switch (c)
       {
       case 'h':
@@ -105,6 +107,9 @@ void CommandLine(int argc, char *argv[])
 	break;
       case 'B':
 	clParameters.BoxSize = atof(optarg);
+	break;
+      case 'C':
+	clParameters.Nchunk = atoi(optarg);
 	break;
       case 'p':
 	clParameters.Periodicity = atof(optarg);

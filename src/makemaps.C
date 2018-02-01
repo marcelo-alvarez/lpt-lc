@@ -96,13 +96,13 @@ void MakeMaps()
   if (clParameters.mapcode == 8){
     zmax = Nu2Redshift(nu1);
     zmin = Nu2Redshift(nu2);
-    if(myid==0) printf("%f %f %f %f\n",zmin,zmax,nu1,nu2);
+    if(myid==0) printf("zmin=%f zmax=%f nu1=%f nu2=%f\n",zmin,zmax,nu1,nu2);
   }
   float rmin = Redshift2Float(zmin,Redshift2RadiusTable);
   float rmax = Redshift2Float(zmax,Redshift2RadiusTable);
   int nperiodic = (int)(2*rmax / BoxSize + 2);
   int tiledbox = nperiodic * BoxSize ; 
-  printf("\n rmin = %f rmax = %f nperiodic = %d BoxSize = %f\n",rmin,rmax,nperiodic,BoxSize);
+  if(myid==0) printf("rmin = %f rmax = %f nperiodic = %d BoxSize = %f tmapsize=%d \n",rmin,rmax,nperiodic,BoxSize,tmapsize);
 
   x0  = - tiledbox / 2     ; y0  = - tiledbox / 2     ; z0  = - tiledbox / 2     ;
   xc0 = x0 + BoxSize / 2   ; yc0 = y0 + BoxSize / 2   ; zc0 = z0 + BoxSize / 2 ; 
@@ -128,7 +128,11 @@ void MakeMaps()
   float slab_xoffset = slabsize * myid ;
 
   // local copies of maps
+
+  MPI_Barrier(MPI_COMM_WORLD);
+
   float *kapmapl, *kszmapl, *taumapl, *dtbmapl, *cibmapl;
+  //Local copies of maps
   if(Parameters.DoMap[KAPCODE]==1) kapmapl = (float *)malloc( mapsize*sizeof(float));
   if(Parameters.DoMap[KSZCODE]==1) kszmapl = (float *)malloc( mapsize*sizeof(float));
   if(Parameters.DoMap[TAUCODE]==1) taumapl = (float *)malloc( mapsize*sizeof(float));
@@ -423,10 +427,8 @@ void MakeMaps()
   }
   }
   }    
-
   MPI_Barrier(MPI_COMM_WORLD);
   double dt = MPI_Wtime() - t1;
-
   if(myid==0) printf("\n Projection took %le seconds\n",dt);
 
   // sum process contributions
@@ -440,7 +442,7 @@ void MakeMaps()
   if(Parameters.DoMap[CIBCODE]==1)
     MPI_Reduce(cibmapl, cibmap, mapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
   if(Parameters.DoMap[DTBCODE]==1)
-    MPI_Reduce(dtbmapl, dtbmap, tmapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(dtbmapl, dtbmap,tmapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
 
   if(myid==0) printf("\n Sum process contributions complete\n");
 

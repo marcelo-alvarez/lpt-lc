@@ -15,7 +15,8 @@ phi		0    # azimuthal angle of center of map in degrees
 NPixels		256  # number of pixels per dimension in map
 NSide		512  # Healpix N_side parameter
 
-Nnu 175  # number of frequency channels
+#Nnu 175  # number of frequency channels
+Nnu 20  # number of frequency channels
 nu1 1200 # lower frequency in MHz
 nu2 1300 # upper frequency in MHz
 

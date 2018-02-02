@@ -6,7 +6,7 @@
 #include "allvars.h"
 
 void  ReportMapStatistics(float *, int, char *);
-int   SlabInShell(float **, float, float);
+int   SlabShellOverlap(float **, float, float);
 float Nu2Redshift(float);
 float Redshift2Nu(float);
 
@@ -193,11 +193,11 @@ void MakeMaps()
     // set corners of octant
     xc1 = xc0 + Periodicity * ( ip - 0.5 );
     yc1 = yc0 + Periodicity * ( jp - 0.5 );
-    zc1 = xc0 + Periodicity * ( kp - 0.5 );
+    zc1 = zc0 + Periodicity * ( kp - 0.5 );
 
     xc2 = xc0 + Periodicity * ( ip + 0.5 );
     yc2 = yc0 + Periodicity * ( jp + 0.5 );
-    zc2 = xc0 + Periodicity * ( kp + 0.5 );
+    zc2 = zc0 + Periodicity * ( kp + 0.5 );
 
     // set corners of slab
 
@@ -213,7 +213,7 @@ void MakeMaps()
     bb[1][0]=xs2; bb[1][1]=ys2; bb[1][2]=zs2;
     
     // if slab does not intersect shell, go to next slab
-    if (SlabInShell(bb, rmin, rmax)==0){
+    if (SlabShellOverlap(bb, rmin, rmax)==0){
 //        if (myid==0) printf("Skipping %d %d %d\n",ip,jp,kp);
 	continue;
     }
@@ -461,13 +461,36 @@ void MakeMaps()
 
 }
 
-int SlabInShell(float **bb, float rmin, float rmax){
-  int InShell = 0;
-  for(int i=0;i<2;i++){
-  for(int j=0;j<2;j++){
-  for(int k=0;k<2;k++){
-    float rc = pow((pow(bb[i][0],2)+pow(bb[j][1],2)+pow(bb[k][2],2)),0.5);
-    if(rc>rmin && rc<rmax) return 1;
+int SlabShellOverlap(float **bb, float rmin, float rmax){
+
+  for(int i1=0;i1<2;i1++){
+  for(int j1=0;j1<2;j1++){
+  for(int k1=0;k1<2;k1++){
+
+    float rc1 = pow((pow(bb[i1][0],2)+pow(bb[j1][1],2)+pow(bb[k1][2],2)),0.5);
+
+    if(rc1>rmin && rc1<rmax) return 1;
+
+    float dr1ci = rc1 - rmin;
+    float dr1co = rc1 - rmax;
+
+    for(int i2=0;i2<2;i2++){
+    for(int j2=0;j2<2;j2++){
+    for(int k2=0;k2<2;k2++){
+
+      float rc2 = pow((pow(bb[i2][0],2)+pow(bb[j2][1],2)+pow(bb[k2][2],2)),0.5);
+
+      // inner boundary
+      float dr2ci = rc2 - rmin;
+      if(dr1ci*dr2ci < 0) return 1;
+
+      // outer boundary
+      float dr2co = rc2 - rmax;
+      if(dr1co*dr2co < 0) return 1;
+
+    }    
+    }    
+    }    
   }
   }
   }

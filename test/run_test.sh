@@ -43,7 +43,7 @@ testname='dtb_static'
 
 echo '------- 21cm test with evolution high-z --------'
 mapnum=8
-nchunk=2
+nchunk=1
 testname='dtb_patchy'
 mpirun -n $nproc ../bin/lin2map -P param.lin2map -v -D $testdata -C $nchunk -N $nres -B $boxsize -p $boxsize -x $boxsizeot -y $boxsizeot -z $boxsizeot -m $mapnum -o $testname -R $testdataz
 

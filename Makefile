@@ -1,7 +1,5 @@
 #----------------------------------------------------------------------
-# OPTIONS FOR RUNNING ON OSCAR MACHINES
-#  Be sure to load module mpich/3.1.1 and gsl/2.3 before running Make!
-#  Where are the libraries for gsl?
+# OPTIONS FOR RUNNING ON DARWIN MAC OS X MACHINES
 #----------------------------------------------------------------------
 
 OPTIMIZE =  -O4 -w 
@@ -9,15 +7,14 @@ OPTIMIZE =  -O4 -w
 MODFLAG = -module 
 OMPLIB = -openmp
 
-FFTW2_PATH = $(HOME)/21cmSimulation/C/fftw-2.1.5
-CFITS_PATH = $(HOME)/21cmSimulation/C/cfitsio
-GSL_PATH = $(HOME)/21cmSimulation/C/gsl-2.4
-CURL_PATH = /gpfs/runtime/opt/curl/7.50.3
+FFTW2_PATH = $(HOME)/fftw-2.1.5/
+CFITS_PATH = $(HOME)/cfitsio/
+GSL_PATH = $(HOME)/gsl-2.4/
 
 CC = mpicc
 C++ = mpic++
 
-OPTIONS = -w
+OPTIONS = -w -DDARWIN
 
 #----------------------------------------------------------------------
 # DO NOT MODIFY THIS FILE

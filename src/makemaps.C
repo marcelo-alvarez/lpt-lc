@@ -338,9 +338,12 @@ void MakeMaps()
 
       float zcur   = Radius2Float(r,Radius2RedshiftTable);
 
-      int index_zr = ic*N*N     + jc*N     + kc;
       int index_dv = ic*N*(N+2) + jc*(N+2) + kc;
 
+      // Use zreion field to determine if point in Lagrangian space is ionized
+      float xHI = 1;
+      if(clParameters.zmask == 1 && zmask[index_dv]>zcur) xHI=0;
+      
       // CMB Lensing redshift factor
       float kapfac;
       float Wkap;
@@ -368,7 +371,7 @@ void MakeMaps()
       if(Parameters.DoMap[DTBCODE]==1){
 	Wdtb   = Redshift2Float(zcur,Redshift2WdtbTable);
 	nu     = Redshift2Nu(zcur);
-	dtbfac = Wdtb *
+	dtbfac = Wdtb * xHI * 
 	  pow(CellSize,3) / pow(r,2) * mapsize / 4. / 3.14159 / dnu;
 	inu    = (int)((nu-nu1)/dnu);
 	if(inu<0 || inu>= Nnu){ inu=0; dtbfac = 0; }

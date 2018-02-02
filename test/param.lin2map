@@ -13,7 +13,7 @@ theta		90   # polar angle of center of map in degrees
 phi		0    # azimuthal angle of center of map in degrees
 #NPixels		512  # number of pixels per dimension in map
 NPixels		256  # number of pixels per dimension in map
-NSide		2048  # Healpix N_side parameter
+NSide		512  # Healpix N_side parameter
 
 #Nnu 175  # number of frequency channels
 Nnu 20  # number of frequency channels

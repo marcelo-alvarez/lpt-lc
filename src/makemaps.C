@@ -133,11 +133,11 @@ void MakeMaps()
 
   float *kapmapl, *kszmapl, *taumapl, *dtbmapl, *cibmapl;
   //Local copies of maps
-  if(Parameters.DoMap[KAPCODE]==1) kapmapl = (float *)malloc( mapsize*sizeof(float));
-  if(Parameters.DoMap[KSZCODE]==1) kszmapl = (float *)malloc( mapsize*sizeof(float));
-  if(Parameters.DoMap[TAUCODE]==1) taumapl = (float *)malloc( mapsize*sizeof(float));
-  if(Parameters.DoMap[CIBCODE]==1) cibmapl = (float *)malloc( mapsize*sizeof(float));
-  if(Parameters.DoMap[DTBCODE]==1) dtbmapl = (float *)malloc(tmapsize*sizeof(float));
+  if(Parameters.DoMap[KAPCODE]==1) kapmapl = new float[mapsize](); 
+  if(Parameters.DoMap[KSZCODE]==1) kszmapl = new float[mapsize]();
+  if(Parameters.DoMap[TAUCODE]==1) taumapl = new float[mapsize]();
+  if(Parameters.DoMap[CIBCODE]==1) cibmapl = new float[mapsize]();
+  if(Parameters.DoMap[DTBCODE]==1) dtbmapl = new float[tmapsize]();  
 
   ReportMemory("before map projection",total_local_size,ovrt,oram);
 

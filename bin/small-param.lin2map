@@ -12,7 +12,7 @@ fov	    	360  # field of view in degrees
 theta		90   # polar angle of center of map in degrees
 phi		0    # azimuthal angle of center of map in degrees
 NPixels		257  # number of pixels per dimension in map
-NSide		512  # Healpix N_side parameter
+NSide		1024  # Healpix N_side parameter
 
 Nnu 129     # number of frequency channels
 nu1 167.000 # lower frequency in MHz

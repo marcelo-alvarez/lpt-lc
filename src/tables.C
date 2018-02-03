@@ -316,7 +316,7 @@ void SetRedshift2WdtbTable(float h, float Omegab, float Omegam, float Omegal, do
   double  c = 2.99792458e5; // in km/sec
   float  r0 = c/H0;         // in Mpc 
   float nu0 = 1.4e3;        // in MHz
-  float  T0 = 1.8e2 * h;    // in mK
+  float  T0 = 23.;    // in mK
   float YHe = 0.25;
 
   // Make the table
@@ -328,7 +328,8 @@ void SetRedshift2WdtbTable(float h, float Omegab, float Omegam, float Omegal, do
     
 
     float z   = ZTABLE_INITIAL + (i+0.5)*dztable;
-    if(evol_flag > 0) Tbmean = T0 * OmegaHI(z, Omegab, YHe);
+    if(evol_flag > 0) Tbmean = T0 * OmegaHI(z, Omegab, YHe) * (Omegab*h*h/0.02) *
+			sqrt((0.15/Omegam/h/h)*((1+z)/10.))/(1-YHe)/Omegab;
     float wdtb = Tbmean * nu0 / r0 * sqrt(Omegam*pow((1+z),3)+Omegal)*
       pow((1+z),-2);
     table[i] = wdtb;

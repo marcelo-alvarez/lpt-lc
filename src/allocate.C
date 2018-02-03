@@ -7,12 +7,12 @@ void AllocateArrays()
 
   // Set local slab size
 
-  long      N = clParameters.N;
-  long  NSide = Parameters.NSide;
+  long      N  = clParameters.N;
+  long  NSide  = Parameters.NSide;
   int   Nchunk = clParameters.Nchunk;
-  int     Nnu = Parameters.Nnu;
-  float   nu1 = Parameters.nu1;
-  float   nu2 = Parameters.nu2;
+  int     Nnu  = Parameters.Nnu;
+  float   nu1  = Parameters.nu1;
+  float   nu2  = Parameters.nu2;
 
   mapsize  = nside2npix(NSide);
   tmapsize = mapsize * (int)ceil(Nnu/Nchunk);

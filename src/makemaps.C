@@ -446,7 +446,7 @@ void MakeMaps()
     MPI_Reduce(cibmapl, cibmap, mapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
   if(Parameters.DoMap[DTBCODE]==1)
     MPI_Reduce(dtbmapl, dtbmap,tmapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
-
+  delete[] dtbmapl;
   if(myid==0) printf("\n Sum process contributions complete\n");
 
   // report statistics

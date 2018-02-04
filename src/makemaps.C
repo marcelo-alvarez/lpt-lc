@@ -334,7 +334,7 @@ void MakeMaps()
       
       float r = sqrt(xL*xL + yL*yL + zL*zL);
 
-      if(r    < rmin || r > rmax) continue;
+      if(r    < rmin - 2*CellSize || r > rmax + 2*CellSize) continue;
 
       float zcur   = Radius2Float(r,Radius2RedshiftTable);
 

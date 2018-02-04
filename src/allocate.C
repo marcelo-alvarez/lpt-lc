@@ -15,7 +15,7 @@ void AllocateArrays()
   float   nu2  = Parameters.nu2;
 
   mapsize  = nside2npix(NSide);
-  tmapsize = mapsize * (int)ceil(Nnu/Nchunk);
+  tmapsize = mapsize * ((int)floor(Nnu/Nchunk)+4);
   
   if(clParameters.N % nproc != 0){
     if(myid==0) printf(

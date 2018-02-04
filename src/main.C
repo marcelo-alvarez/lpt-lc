@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
   if(clParameters.lptcode>0) Displace_1LPT(delta1, sx1, sy1, sz1);  
   MPI_Barrier(MPI_COMM_WORLD);
 
-  double chunksize = floor(Parameters.Nnu/Nchunk);
+  double chunksize = ceil(Parameters.Nnu/Nchunk);
   int Nnu_tot = Parameters.Nnu;
   float nu1 = Parameters.nu1;
   float nu2 = Parameters.nu2;
@@ -77,14 +77,14 @@ int main(int argc, char *argv[])
 
   for (int ci=0; ci<Nchunk; ci++){
     // Make maps
-       Parameters.nu1 = nu1 + ci*(chunksize)*dnu;
-       Parameters.nu2 = Parameters.nu1 + (chunksize-1)*dnu;
+       Parameters.nu1 = nu1 + ci*(chunksize+1)*dnu - 2*dnu;
+       Parameters.nu2 = Parameters.nu1 + (chunksize)*dnu + 2*dnu;   // Introduce a small overlap between chunks.
        if (Parameters.nu2 >= nu2){
-           Parameters.nu2 = nu2;
-           Parameters.Nnu = (int)((nu2 - Parameters.nu1)/dnu);
+           Parameters.nu2 = nu2 + 2*dnu;
+           Parameters.Nnu = (int)floor((Parameters.nu2 - Parameters.nu1 + 2*dnu)/dnu);
        }
        else{
-           Parameters.Nnu = chunksize;
+           Parameters.Nnu = chunksize + 4;
        }
       if (myid==0){
        printf("\n Chunk %d \n",ci);

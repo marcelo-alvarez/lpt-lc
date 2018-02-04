@@ -418,8 +418,8 @@ void WriteSingletMap(float *map, char *base){
 
   nu1 = Parameters.nu1; nu2 = Parameters.nu2; Nnu = Parameters.Nnu; 
   dnu = (nu2 - nu1) / Nnu ;
-  for(int inu=0;inu<Nnu;inu++){
-
+  for(int inu=1;inu<Nnu-1;inu++){
+    // Exclude the first and last frequencies. Ensure chunks overlap.
     nu = nu1 + (inu+0.5) * dnu ;
     
     // binary format

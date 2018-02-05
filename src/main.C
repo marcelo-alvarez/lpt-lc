@@ -82,6 +82,7 @@ int main(int argc, char *argv[])
        if (Parameters.nu2 >= nu2){
            Parameters.nu2 = nu2 + 2*dnu;
            Parameters.Nnu = (int)floor((Parameters.nu2 - Parameters.nu1 + 2*dnu)/dnu);
+	   tmapsize = Parameters.Nnu * mapsize;
        }
        else{
            Parameters.Nnu = chunksize + 4;
@@ -95,6 +96,7 @@ int main(int argc, char *argv[])
 
     // Write maps
     WriteMaps();
+    if(myid==0 && Parameters.DoMap[DTBCODE]==1) delete dtbmap;
     MPI_Barrier(MPI_COMM_WORLD);
   }
   // Finalize and return

@@ -137,8 +137,10 @@ void MakeMaps()
   if(Parameters.DoMap[KSZCODE]==1) kszmapl = new float[mapsize]();
   if(Parameters.DoMap[TAUCODE]==1) taumapl = new float[mapsize]();
   if(Parameters.DoMap[CIBCODE]==1) cibmapl = new float[mapsize]();
-  if(Parameters.DoMap[DTBCODE]==1) dtbmapl = new float[tmapsize]();  
-
+  if(Parameters.DoMap[DTBCODE]==1) {
+    if(myid==0) dtbmap = new float[tmapsize](); 
+    dtbmapl = new float[tmapsize]();  
+  }
   ReportMemory("before map projection",total_local_size,ovrt,oram);
 
   if(myid==0){
@@ -374,7 +376,7 @@ void MakeMaps()
 	dtbfac = Wdtb * xHI * 
 	  pow(CellSize,3) / pow(r,2) * mapsize / 4. / 3.14159 / dnu;
 	inu    = (int)((nu-nu1)/dnu);
-	if(inu<0 || inu>= Nnu){ inu=0; dtbfac = 0; }
+	if(inu<0 || inu >= Nnu){ inu=0; dtbfac = 0; }
       }
       
       float D      = growth(zcur,Parameters.Omegam,Parameters.Omegal, Parameters.w)/DInit;
@@ -417,6 +419,7 @@ void MakeMaps()
       vec2pix_nest(Parameters.NSide, vec, &pixel); tpixel = pixel + inu * mapsize;      
       if(Parameters.DoMap[KAPCODE]==1) kapmapl[ pixel] += kapfac ; // * (1-halomask[index_dv]);
       if(Parameters.DoMap[CIBCODE]==1) cibmapl[ pixel] += cibfac ; // * (1-halomask[index_dv]);
+      //if(tpixel > tmapsize) printf("too big, inu = %d mapsize = %d tmapsize = %d Nnu = %d tpixel = %d pixel = %d\n",inu,mapsize,tmapsize,Nnu,tpixel,pixel);
       if(Parameters.DoMap[DTBCODE]==1) dtbmapl[tpixel] += dtbfac ; // * (1-halomask[index_dv]);
       
     }
@@ -446,7 +449,9 @@ void MakeMaps()
     MPI_Reduce(cibmapl, cibmap, mapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
   if(Parameters.DoMap[DTBCODE]==1)
     MPI_Reduce(dtbmapl, dtbmap,tmapsize, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
-  delete[] dtbmapl;
+
+  if(Parameters.DoMap[DTBCODE]==1) delete dtbmapl;
+  
   if(myid==0) printf("\n Sum process contributions complete\n");
 
   // report statistics

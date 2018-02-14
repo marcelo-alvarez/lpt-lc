@@ -241,7 +241,7 @@ void SetRedshift2DgTable(double *history, double *table){
 
 //////////////// Tau table //////////////////
 
-void SetRedshift2TauTable(float h, float Omegab, float Omegam, double *table, double *Redshift2HistoryTable){
+void SetRedshift2TauTable(float h, float Omegab, float Omegam, double *table){
 
   float dztable = ((float)ZTABLE_FINAL - ZTABLE_INITIAL) / NZTABLE;
 
@@ -257,7 +257,7 @@ void SetRedshift2TauTable(float h, float Omegab, float Omegam, double *table, do
   for(int i=1;i<NZTABLE-1;i++){
     
     float z = ZTABLE_INITIAL + (i+0.5)*dztable;
-    float x = Redshift2HistoryTable[i];
+    float x = 1;
 
     NHe=1;
     if(z<3) NHe=2;
@@ -266,6 +266,36 @@ void SetRedshift2TauTable(float h, float Omegab, float Omegam, double *table, do
            (1-YHe+NHe*YHe/4)*dztable;
 
     table[i]+=table[i-1]+dtau;
+
+  }
+
+}
+
+//////////////// WTau table //////////////////
+
+void SetRedshift2WTauTable(float h, float Omegab, float Omegam, double *table){
+
+  float dztable = ((float)ZTABLE_FINAL - ZTABLE_INITIAL) / NZTABLE;
+
+  float thompson = 6.65e-25;
+  float YHe = 0.25;
+  float hubble0 = 100./3.086e19*h;
+  float ne0=Omegab*h*h*1.88e-29/1.67e-24;
+  float c=3e10;
+  
+  float dtau0=thompson*ne0*3.086e24; // in 1/Mpc
+  
+  float NHe;
+  for(int i=1;i<NZTABLE-1;i++){
+    
+    float z = ZTABLE_INITIAL + (i+0.5)*dztable;
+
+    NHe=1;
+    if(z<3) NHe=2;
+
+    float Wtau = dtau0*pow((1+z),2)*(1-YHe+NHe*YHe/4);      
+
+    table[i] = Wtau;
 
   }
 

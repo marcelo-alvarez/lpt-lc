@@ -61,6 +61,11 @@ void MakeMaps()
   SetRedshift2WKappaTable(h, Omegam, Omegal, zKappa, Redshift2WKappaTable, 
 			  Redshift2RadiusTable);
 
+  // Set Redshift to WTau Table
+  
+  Redshift2WTauTable = new double[NZTABLE];
+  SetRedshift2WTauTable(h, Omegam, Omegal, Redshift2WTauTable);
+
   // Set Redshift to Wdtb Table
   
   Redshift2WdtbTable = new double[NZTABLE];
@@ -150,12 +155,14 @@ void MakeMaps()
       float zcur  = ZTABLE_INITIAL + i*dztable;
       float wkapt = Redshift2WKappaTable[i];
       float wkap = Redshift2Float(zcur,Redshift2WKappaTable);
+      float wtaut = Redshift2WTauTable[i];
+      float wtau = Redshift2Float(zcur,Redshift2WTauTable);
       float dcur  = growth(zcur,Parameters.Omegam,Parameters.Omegal, Parameters.w)/DInit;
       float wcib = 0;
       if(Parameters.DoMap[CIBCODE]==1)
 	wcib = Float2Float(zcur,FluxTable_nz,FluxTable_zmin,FluxTable_zmax,
 			   &Redshift2FluxPerChiTable,0.0);
-      fprintf(wfile,"%e %e %e %e %e\n",zcur,wcib,wkap,wkapt,dcur);
+      fprintf(wfile,"%e %e %e %e %e %e %e\n",zcur,wcib,wkap,wkapt,wtau,wtaut,dcur);
     }
     fclose(wfile);
   }
@@ -355,6 +362,15 @@ void MakeMaps()
 	  pow(CellSize,3) / pow(r,2) * mapsize / 4. / 3.14159;
       }
 
+      // tau redshift factor
+      float taufac;
+      float Wtau;
+      if(Parameters.DoMap[KSZCODE]==1){
+	Wtau = Redshift2Float(zcur,Redshift2WTauTable);	
+	taufac = Wtau * (1-xHI) * 
+	  pow(CellSize,3) / pow(r,2) * mapsize / 4. / 3.14159;
+      }
+
       // CIB redshift factor
       float cibfac;
       float Wcib;
@@ -389,13 +405,27 @@ void MakeMaps()
       long pixel, tpixel;
       
       float xE,yE,zE;
-      // Displacements
 
+      // Displacements
       float sx,sy,sz;
 
       sx = D * sx1[index_dv] + D2 * sx2[index_dv] ;
       sy = D * sy1[index_dv] + D2 * sy2[index_dv] ;
       sz = D * sz1[index_dv] + D2 * sz2[index_dv] ;
+
+      // Velocities
+      float vx,vy,vz;
+      // f=1 and missing 2lpt for now need to fix 
+      float aHf = 100*h*pow(pow((1+zcur),3)*Omegam+1-Omegam,0.5)/(1+zcur)/3e5;
+       
+      vx = aHf * sx;
+      vy = aHf * sy;
+      vz = aHf * sz;
+
+      float vdotn = (vx*xL+vy*yL+vz*zL) / r ;
+
+      float kszfac ;
+      if(Parameters.DoMap[KSZCODE]==1) kszfac = taufac * vdotn ;
 
       if(halomask[index_dv]>0){
 	sx = sx1[index_dv] ;
@@ -417,9 +447,11 @@ void MakeMaps()
       // Add contribution to Eulerian point      
       vec[2] = xE; vec[1] = yE; vec[0] = zE; // x-z flipped
       vec2pix_nest(Parameters.NSide, vec, &pixel); tpixel = pixel + inu * mapsize;      
+
       if(Parameters.DoMap[KAPCODE]==1) kapmapl[ pixel] += kapfac ; // * (1-halomask[index_dv]);
+      if(Parameters.DoMap[TAUCODE]==1) taumapl[ pixel] += taufac ; // * (1-halomask[index_dv]);
+      if(Parameters.DoMap[KSZCODE]==1) kszmapl[ pixel] += kszfac ; // * (1-halomask[index_dv]);
       if(Parameters.DoMap[CIBCODE]==1) cibmapl[ pixel] += cibfac ; // * (1-halomask[index_dv]);
-      //if(tpixel > tmapsize) printf("too big, inu = %d mapsize = %d tmapsize = %d Nnu = %d tpixel = %d pixel = %d\n",inu,mapsize,tmapsize,Nnu,tpixel,pixel);
       if(Parameters.DoMap[DTBCODE]==1) dtbmapl[tpixel] += dtbfac ; // * (1-halomask[index_dv]);
       
     }
@@ -432,7 +464,8 @@ void MakeMaps()
 
   }
   }
-  }    
+  }
+  
   MPI_Barrier(MPI_COMM_WORLD);
   double dt = MPI_Wtime() - t1;
   if(myid==0) printf("\n Projection took %le seconds\n",dt);

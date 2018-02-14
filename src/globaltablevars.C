@@ -1,4 +1,5 @@
 double        *Redshift2RadiusTable,   *Redshift2HistoryTable, 
+              *Redshift2WTauTable,    
               *Redshift2TauTable,      *Redshift2DgTable,              
               *Radius2RedshiftTable,   *Redshift2WKappaTable,
               *Redshift2WdtbTable,

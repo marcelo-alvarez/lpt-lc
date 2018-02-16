@@ -403,7 +403,7 @@ void WriteSingleMap(float *map, char *base){
   // fits format
   sprintf(fname,"!%s_%s.fits",clParameters.BaseOut,base);          
   sprintf(coord,"C");
-  write_healpix_map(map, Parameters.NSide, fname, 1, coord);
+  if(clParameters.binary_only==0) write_healpix_map(map, Parameters.NSide, fname, 1, coord);
 
 }
 
@@ -431,7 +431,7 @@ void WriteSingletMap(float *map, char *base){
     // fits format
     sprintf(fname,"!%s_%s_%6.2f.fits",clParameters.BaseOut,base,nu);
     sprintf(coord,"C");
-    write_healpix_map(&map[inu*mapsize], Parameters.NSide, fname, 1, coord);
+    if(clParameters.binary_only==0) write_healpix_map(&map[inu*mapsize], Parameters.NSide, fname, 1, coord);
 
   }
 }

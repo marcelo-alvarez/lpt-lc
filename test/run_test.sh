@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bashrc
+
 if [ `uname` == "Darwin" ] ; then TMPDIR=/tmp;  fi
 
 nproc=2
@@ -23,7 +25,7 @@ mpirun -n $nproc ../bin/lin2map -P param.lin2map -v -D $testdata -C $nchunk -N $
 echo '------- cmb test with evolution high-z --------'
 mapnum=6
 testname='cmb'
-mpirun -n $nproc ../bin/lin2map -P param.lin2map -v -D $testdata -N $nres -B $boxsize -p $boxsize -x $boxsizeot -y $boxsizeot -z $boxsizeot -m $mapnum -o $testname -R $testdataz
+#mpirun -n $nproc ../bin/lin2map -P param.lin2map -v -D $testdata -N $nres -B $boxsize -p $boxsize -x $boxsizeot -y $boxsizeot -z $boxsizeot -m $mapnum -o $testname -R $testdataz
 
 
 

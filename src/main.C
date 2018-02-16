@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
        Parameters.nu2 = Parameters.nu1 + (chunksize)*dnu + 2*dnu;   // Introduce a small overlap between chunks.
        if (Parameters.nu2 >= nu2){
            Parameters.nu2 = nu2 + 2*dnu;
-           Parameters.Nnu = (int)floor((Parameters.nu2 - Parameters.nu1 + 2*dnu)/dnu);
+           Parameters.Nnu = Nnu_tot / Nchunk + 4;
 	   tmapsize = Parameters.Nnu * mapsize;
        }
        else{

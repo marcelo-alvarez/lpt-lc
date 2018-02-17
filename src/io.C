@@ -364,14 +364,9 @@ void WriteLPT()
 void WriteMaps()
 {
 
-  if(myid==0) {
-    printf("\n Writing maps...\n");
-  } else {
-    MPI_Barrier(MPI_COMM_WORLD);
-    return;
-  }
-
   if(myid==0){
+    
+    printf("\n Writing maps...\n");
     
     if(Parameters.DoMap[KAPCODE]) WriteSingleMap( kapmap,"kap");
     if(Parameters.DoMap[KSZCODE]) WriteSingleMap (kszmap,"ksz");
@@ -379,7 +374,7 @@ void WriteMaps()
     if(Parameters.DoMap[CIBCODE]) WriteSingleMap (cibmap,"cib");
     if(Parameters.DoMap[DTBCODE]) WriteSingletMap(dtbmap,"dtb");
 
-    if(myid==0) printf("\n Maps written...");
+    printf("\n Maps written...");
 
   }
 
@@ -393,7 +388,7 @@ void WriteSingleMap(float *map, char *base){
   char fname[256], coord[1];
   FILE *fout;
   int  mapsize = Parameters.NSide*Parameters.NSide*12;
-
+  
   // binary format
   sprintf(fname,"%s_%s.bin",clParameters.BaseOut,base);
   fout = fopen(fname,"wb");   
@@ -418,11 +413,13 @@ void WriteSingletMap(float *map, char *base){
 
   nu1 = Parameters.nu1; nu2 = Parameters.nu2; Nnu = Parameters.Nnu; 
   dnu = (nu2 - nu1) / Nnu ;
+  if(myid==0) printf("tmapsize = %d, Nnu = %d Nnu*mapsize = %d\n",tmapsize,Nnu,Nnu*mapsize);
   for(int inu=1;inu<Nnu-1;inu++){
     // Exclude the first and last frequencies. Ensure chunks overlap.
     nu = nu1 + (inu+0.5) * dnu ;
     
-    // binary format
+    if(myid==0) printf("inu*mapsize+mapsize = %d\n",inu*mapsize+mapsize);
+  // binary format
     sprintf(fname,"%s_%s_%6.2f.bin",clParameters.BaseOut,base,nu);
     fout = fopen(fname,"wb");   
     fwrite(&map[inu*mapsize],4,mapsize,fout);

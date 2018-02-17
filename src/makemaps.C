@@ -144,21 +144,21 @@ void MakeMaps()
   if(Parameters.DoMap[CIBCODE]==1) cibmapl = new float[mapsize]();
   if(Parameters.DoMap[DTBCODE]==1) {
     if(myid==0) dtbmap = new float[tmapsize](); 
-    dtbmapl = new float[tmapsize]();  
+    dtbmapl = new float[tmapsize]();
   }
   ReportMemory("before map projection",total_local_size,ovrt,oram);
 
   if(myid==0){
-    float dztable = ((float)ZTABLE_FINAL - ZTABLE_INITIAL) / NZTABLE;    
+    float dztable = ((float)ZTABLE_FINAL - ZTABLE_INITIAL) / NZTABLE;
     FILE* wfile = fopen("weights.dat","w");
     for(int i=0; i<NZTABLE; i++){
       float zcur  = ZTABLE_INITIAL + i*dztable;
       float wkapt = Redshift2WKappaTable[i];
-      float wkap = Redshift2Float(zcur,Redshift2WKappaTable);
+      float wkap  = Redshift2Float(zcur,Redshift2WKappaTable);
       float wtaut = Redshift2WTauTable[i];
-      float wtau = Redshift2Float(zcur,Redshift2WTauTable);
+      float wtau  = Redshift2Float(zcur,Redshift2WTauTable);
       float dcur  = growth(zcur,Parameters.Omegam,Parameters.Omegal, Parameters.w)/DInit;
-      float wcib = 0;
+      float wcib  = 0;
       if(Parameters.DoMap[CIBCODE]==1)
 	wcib = Float2Float(zcur,FluxTable_nz,FluxTable_zmin,FluxTable_zmax,
 			   &Redshift2FluxPerChiTable,0.0);
@@ -235,9 +235,7 @@ void MakeMaps()
 	}
       }
     }
-    if(myid==0) printf("\n Image %d %d %d\n",ip,jp,kp);
-    //MPI_Barrier(MPI_COMM_WORLD);
-    if(myid==0) printf("  Masking %d halos\n",Nhalos);
+    
     // Loop over halos and mask
     float fcoll=0;
     float HaloVolumeTot=0;
@@ -329,7 +327,6 @@ void MakeMaps()
       }      
     }
 
-    if(myid==0) printf("  Projecting LPT field\n");
     // Note that x and z are switched
     for(int ic=0;ic<Nlocal;ic++){
       float xL = xs1 + (ic+0.5)*CellSize;

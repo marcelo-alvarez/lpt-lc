@@ -15,8 +15,9 @@ void AllocateArrays()
   float   nu2  = Parameters.nu2;
 
   mapsize  = nside2npix(NSide);
-  tmapsize = mapsize * ((int)floor(Nnu/Nchunk)+4);
-  
+  int nmap = ((int)floor(Nnu/Nchunk)+4);
+  tmapsize = mapsize * nmap;
+  if(myid==0) printf("nmaps = %d\n",nmap);
   if(clParameters.N % nproc != 0){
     if(myid==0) printf(
 	        "\n # of slices %d does not divide into # of procs %d, exiting\n\n",
@@ -34,7 +35,7 @@ void AllocateArrays()
     Parameters.DoMap[KAPCODE]+
     Parameters.DoMap[KSZCODE]+
     Parameters.DoMap[TAUCODE]+
-    Parameters.DoMap[DTBCODE];
+    Parameters.DoMap[DTBCODE]+
     Parameters.DoMap[CIBCODE];
 
   int Nfields = 4; // 1LPT only, delta + S_1LPT

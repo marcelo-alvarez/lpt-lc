@@ -77,23 +77,23 @@ int main(int argc, char *argv[])
 
   for (int ci=0; ci<Nchunk; ci++){
     // Make maps
-       Parameters.nu1 = nu1 + ci*(chunksize+1)*dnu - 2*dnu;
-       Parameters.nu2 = Parameters.nu1 + (chunksize)*dnu + 2*dnu;   // Introduce a small overlap between chunks.
-       if (Parameters.nu2 >= nu2){
-           Parameters.nu2 = nu2 + 2*dnu;
-           Parameters.Nnu = Nnu_tot / Nchunk + 4;
-	   tmapsize = Parameters.Nnu * mapsize;
-       }
-       else{
-           Parameters.Nnu = chunksize + 4;
-       }
-      if (myid==0){
-       printf("\n Chunk %d \n",ci);
-       printf("nu1=%f, nu2=%f, dnu=%f, nu0 = %f, numax=%f , Nnu=%d, chunksize=%f \n",Parameters.nu1,Parameters.nu2,dnu, nu1, nu2,Parameters.Nnu, chunksize);
-      } // myid==0
+    Parameters.nu1 = nu1 + ci*(chunksize+1)*dnu - 2*dnu;
+    Parameters.nu2 = Parameters.nu1 + (chunksize)*dnu + 2*dnu;   // Introduce a small overlap between chunks.
+    if (Parameters.nu2 >= nu2){
+      Parameters.nu2 = nu2 + 2*dnu;
+      Parameters.Nnu = Nnu_tot / Nchunk + 4;
+      tmapsize = Parameters.Nnu * mapsize;
+    }
+    else{
+      Parameters.Nnu = chunksize + 4;
+    }
+    if (myid==0){
+      printf("\n Chunk %d \n",ci);
+      printf("nu1=%f, nu2=%f, dnu=%f, nu0 = %f, numax=%f , Nnu=%d, chunksize=%f \n",Parameters.nu1,Parameters.nu2,dnu, nu1, nu2,Parameters.Nnu, chunksize);
+    } // myid==0
     MakeMaps();
     MPI_Barrier(MPI_COMM_WORLD);
-
+    
     // Write maps
     WriteMaps();
     if(myid==0 && Parameters.DoMap[DTBCODE]==1) delete dtbmap;

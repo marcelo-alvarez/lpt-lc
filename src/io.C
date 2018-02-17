@@ -404,7 +404,7 @@ void WriteSingleMap(float *map, char *base){
 
 void WriteSingletMap(float *map, char *base){
 
-  char fname[256], coord[1];
+  char fname[2048];
   FILE *fout;
   int  mapsize = Parameters.NSide*Parameters.NSide*12;
 
@@ -428,18 +428,8 @@ void WriteSingletMap(float *map, char *base){
     // fits format
     if(clParameters.binary_only==0) {
       sprintf(fname,"!%s_%s_%6.2f.fits",clParameters.BaseOut,base,nu);
-      sprintf(coord,"C");
-      write_healpix_map(&map[inu*mapsize], Parameters.NSide, fname, 1, coord);
+      write_healpix_map(&map[inu*mapsize], Parameters.NSide, fname, 1, "C");
     }
 
-    printf("sprintf to fname with exclamation point\n");
-    sprintf(fname,"!%s_%s_%6.2f.fits",clParameters.BaseOut,base,nu);
-
-    printf("sprintf to fname NO exclamation point\n");
-    sprintf(fname,"%s_%s_%6.2f.fits",clParameters.BaseOut,base,nu);
-
-    printf("sprintf coord C\n");
-    sprintf(coord,"C");
-    
   }
 }

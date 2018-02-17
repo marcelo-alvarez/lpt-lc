@@ -16,7 +16,7 @@ NPixels		256  # number of pixels per dimension in map
 NSide		2048  # Healpix N_side parameter
 
 #Nnu 175  # number of frequency channels
-Nnu 2  # number of frequency channels
+Nnu 8  # number of frequency channels
 nu1 149 # lower frequency in MHz
 nu2 151 # upper frequency in MHz
 

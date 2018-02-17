@@ -414,7 +414,7 @@ void WriteSingletMap(float *map, char *base){
   nu1 = Parameters.nu1; nu2 = Parameters.nu2; Nnu = Parameters.Nnu; 
   dnu = (nu2 - nu1) / Nnu ;
   if(myid==0) printf("tmapsize = %d, Nnu = %d Nnu*mapsize = %d\n",tmapsize,Nnu,Nnu*mapsize);
-  for(int inu=1;inu<Nnu-1;inu++){
+  for(int inu=2;inu<Nnu-2;inu++){
     // Exclude the first and last frequencies. Ensure chunks overlap.
     nu = nu1 + (inu+0.5) * dnu ;
     

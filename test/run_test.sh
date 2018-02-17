@@ -33,7 +33,7 @@ nproc=1
 
 echo '------- 21cm test (with fits serial) --------'
 mapnum=8
-nchunk=1
+nchunk=4
 binary_only=0
 testname='21cm'
 nproc=1

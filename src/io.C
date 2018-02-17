@@ -419,16 +419,27 @@ void WriteSingletMap(float *map, char *base){
     nu = nu1 + (inu+0.5) * dnu ;
     
     if(myid==0) printf("inu*mapsize+mapsize = %d\n",inu*mapsize+mapsize);
-  // binary format
+    // binary format
     sprintf(fname,"%s_%s_%6.2f.bin",clParameters.BaseOut,base,nu);
     fout = fopen(fname,"wb");   
     fwrite(&map[inu*mapsize],4,mapsize,fout);
     fclose(fout);
     
     // fits format
-    sprintf(fname,"!%s_%s_%6.2f.fits",clParameters.BaseOut,base,nu);
-    sprintf(coord,"C");
-    if(clParameters.binary_only==0) write_healpix_map(&map[inu*mapsize], Parameters.NSide, fname, 1, coord);
+    if(clParameters.binary_only==0) {
+      write_healpix_map(&map[inu*mapsize], Parameters.NSide, fname, 1, coord);
+      sprintf(fname,"!%s_%s_%6.2f.fits",clParameters.BaseOut,base,nu);
+      sprintf(coord,"C");
+    }
 
+    printf("sprintf to fname with exclamation point\n");
+    sprintf(fname,"!%s_%s_%6.2f.fits",clParameters.BaseOut,base,nu);
+
+    printf("sprintf to fname NO exclamation point\n");
+    sprintf(fname,"%s_%s_%6.2f.fits",clParameters.BaseOut,base,nu);
+
+    printf("sprintf coord C\n");
+    sprintf(coord,"C");
+    
   }
 }

@@ -153,16 +153,24 @@ void MakeMaps()
     FILE* wfile = fopen("weights.dat","w");
     for(int i=0; i<NZTABLE; i++){
       float zcur  = ZTABLE_INITIAL + i*dztable;
+
       float wkapt = Redshift2WKappaTable[i];
       float wkap  = Redshift2Float(zcur,Redshift2WKappaTable);
+
       float wtaut = Redshift2WTauTable[i];
       float wtau  = Redshift2Float(zcur,Redshift2WTauTable);
+
+      float wdtbt = Redshift2WdtbTable[i];
+      float wdtb  = Redshift2Float(zcur,Redshift2WdtbTable);
+      
       float dcur  = growth(zcur,Parameters.Omegam,Parameters.Omegal, Parameters.w)/DInit;
       float wcib  = 0;
+      
       if(Parameters.DoMap[CIBCODE]==1)
 	wcib = Float2Float(zcur,FluxTable_nz,FluxTable_zmin,FluxTable_zmax,
 			   &Redshift2FluxPerChiTable,0.0);
-      fprintf(wfile,"%e %e %e %e %e %e %e\n",zcur,wcib,wkap,wkapt,wtau,wtaut,dcur);
+      fprintf(wfile,"%e %e %e %e %e %e %e %e %e\n",
+	      zcur,wcib,wkap,wkapt,wtau,wtaut,wdtb,wdtbt,dcur);
     }
     fclose(wfile);
   }

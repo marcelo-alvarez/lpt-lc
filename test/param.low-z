@@ -1,0 +1,22 @@
+# Cosmological parameters
+Omegam          0.32
+Omegal          0.68
+Omegab          0.049
+h               0.67  
+ns              0.96
+w               -1
+
+# These are the parameters describing the map 
+
+fov	    	360  # field of view in degrees (not used)
+theta		90   # polar angle of center of map in degrees (not used)
+phi		0    # azimuthal angle of center of map in degrees (not used)
+NPixels		256  # number of pixels per dimension in map (not used)
+NSide		512  # Healpix N_side parameter
+
+Nnu 4   # number of frequency channels
+nu1 580 # lower frequency in MHz
+nu2 620 # upper frequency in MHz
+
+InitialRedshift  6 # not used for 21cm
+FinalRedshift    9 # not used for 21cm

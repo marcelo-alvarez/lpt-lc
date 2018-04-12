@@ -9,34 +9,35 @@
 **Astropnysical Models**
 ------------------
 
-*Cosmic infrared background*
+Cosmic infrared background
 ^^^^^^^^^
 
-*Kinetic Sunyaev-Zel'dovich and Optical Depth*
+Kinetic Sunyaev-Zel'dovich and Optical Depth
 ^^^^^^^^^
-*Patchy Reionization*
+
+Patchy Reionization
 ''''''''''
 
-*Late time*
+Late time
 '''''''''' 
 
-*21cm*
+21-cm intensity maps
 ^^^^^^^^^
 
-*Inhomogeneous heating*
-'''''''''''''''''''''''
-
-*Lyman-alpha pumping*
-'''''''''''''''''''''
-
-*Patchy Reionization*
+Patchy Reionization
 ''''''''''''''
 
-*HI in galaxies*
+HI in galaxies
 ''''''''''''''''
 
-*Lensing*
-^^^^^^^^^
+Inhomogeneous heating
+'''''''''''''''''''''''
+
+Lyman-alpha pumping
+'''''''''''''''''''''
+
+Lensing
+^^^^^^^
 
 
 

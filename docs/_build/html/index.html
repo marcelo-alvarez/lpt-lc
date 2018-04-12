@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>cal-sky: Cosmology and Astrophysics on the Lightcone &#8212; cal-sky  documentation</title>
+    <title>cal-sky &#8212; cal-sky  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,6 +24,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quickstart" href="quickstart.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -39,41 +40,46 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="toctree-wrapper compound">
-</div>
-<div class="section" id="cal-sky-cosmology-and-astrophysics-on-the-lightcone">
-<h1><strong>cal-sky</strong>: Cosmology and Astrophysics on the Lightcone<a class="headerlink" href="#cal-sky-cosmology-and-astrophysics-on-the-lightcone" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="quickstart">
-<h2><strong>Quickstart</strong><a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="installation">
-<h3><em>Installation</em><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
-<ol class="arabic simple">
-<li><dl class="first docutils">
-<dt>create a new copy of the file Make.mach.generic and rename to your machine:</dt>
-<dd><code class="docutils literal"><span class="pre">cp</span> <span class="pre">Make.mach.generic</span> <span class="pre">Make.mach.\&lt;your-machine\&gt;</span></code></dd>
-</dl>
+  <div class="section" id="cal-sky">
+<h1><code class="docutils literal"><span class="pre">cal-sky</span></code><a class="headerlink" href="#cal-sky" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal"><span class="pre">cal-sky</span></code> is a C/C++ code that takes as input cosmological initial conditions and, optionally, reionization redshifts and halo catalogs, to generate correlated large scale structure maps of the sky at multiple frequencies from the radio to submm, using Lagrangian perturbation theory.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html"><strong>Quickstart</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#installation"><em>Installation</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#test"><em>Test</em></a></li>
+</ul>
 </li>
-<li>edit the file Make.mach.&lt;your-machine&gt; to reflect your libraries and C/C++ compiler flags (you need to have mpi, gsl, fftw-2.1.5, and cfitsio installed)</li>
-<li><dl class="first docutils">
-<dt>run configure (which just concatenates two files to make the Makefile):</dt>
-<dd><code class="docutils literal"><span class="pre">./configure</span> <span class="pre">\&lt;your-machine\&gt;</span></code></dd>
-</dl>
+<li class="toctree-l1"><a class="reference internal" href="usage.html"><strong>Usage</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#parameter-file">Parameter file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#commandline-options">Commandline options</a></li>
+</ul>
 </li>
-<li><dl class="first docutils">
-<dt>compile:</dt>
-<dd><code class="docutils literal"><span class="pre">make</span></code></dd>
-</dl>
+<li class="toctree-l1"><a class="reference internal" href="structure.html"><strong>Code structure</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structure.html#mapmaking">Mapmaking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html#lagrangian-perturbation-theory">Lagrangian perturbation theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html#subgrid-biasing">Subgrid biasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html#redshift-kernels-and-tables">Redshift kernels and tables</a></li>
+</ul>
 </li>
-</ol>
-</div>
-<div class="section" id="usage">
-<h3><em>Usage</em><a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
-<ol class="arabic simple">
-<li>go to the test directory and run the test:
-<code class="docutils literal"><span class="pre">cd</span> <span class="pre">test</span></code>
-<code class="docutils literal"><span class="pre">./run_test.sh</span></code></li>
-</ol>
-</div>
+<li class="toctree-l1"><a class="reference internal" href="astrophysics.html"><strong>Astropnysical Models</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="astrophysics.html#cosmic-infrared-background"><em>Cosmic infrared background</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="astrophysics.html#kinetic-sunyaev-zel-dovich-and-optical-depth"><em>Kinetic Sunyaev-Zel’dovich and Optical Depth</em></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="astrophysics.html#patchy-reionization"><em>Patchy Reionization</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="astrophysics.html#late-time"><em>Late time</em></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="astrophysics.html#cm"><em>21cm</em></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="astrophysics.html#inhomogeneous-heating"><em>Inhomogeneous heating</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="astrophysics.html#lyman-alpha-pumping"><em>Lyman-alpha pumping</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="astrophysics.html#id1"><em>Patchy Reionization</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="astrophysics.html#hi-in-galaxies"><em>HI in galaxies</em></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="astrophysics.html#lensing"><em>Lensing</em></a></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 
@@ -93,11 +99,18 @@
 
 
 <h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html"><strong>Quickstart</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html"><strong>Usage</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html"><strong>Code structure</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="astrophysics.html"><strong>Astropnysical Models</strong></a></li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="quickstart.html" title="next chapter"><strong>Quickstart</strong></a></li>
   </ul></li>
 </ul>
 </div>

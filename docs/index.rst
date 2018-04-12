@@ -3,34 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+``cal-sky``
+===========
+
+``cal-sky`` is a C/C++ code that takes as input cosmological initial conditions and, optionally, reionization redshifts and halo catalogs, to generate correlated large scale structure maps of the sky at multiple frequencies from the radio to submm, using Lagrangian perturbation theory. 
+
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 3
 
-**cal-sky**: Cosmology and Astrophysics on the Lightcone
-======================================================== 
-
-**Quickstart**
-----------
-
-*Installation*
-^^^^^^^^^^^^
-
-#. create a new copy of the file Make.mach.generic and rename to your machine:
-    ``cp Make.mach.generic Make.mach.\<your-machine\>``
-    
-#. edit the file Make.mach.\<your-machine\> to reflect your libraries and C/C++ compiler flags (you need to have mpi, gsl, fftw-2.1.5, and cfitsio installed)
-   
-#. run configure (which just concatenates two files to make the Makefile):
-    ``./configure \<your-machine\>``
-    
-#. compile:
-    ``make``
-
-*Usage*
-^^^^^^^
-
-#. go to the test directory and run the test:
-   ``cd test``
-   ``./run_test.sh``
-
+   quickstart
+   usage
+   structure
+   astrophysics

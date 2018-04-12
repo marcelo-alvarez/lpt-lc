@@ -9,8 +9,16 @@
 **Quickstart**
 -------------
 
-*Installation*
-^^^^^^^^^^^^
+*Download*
+^^^^^^^^^^
+
+The easiest way to obtain the code is by cloning from github:
+    ``git clone git@github.com:marcelo-alvarez/cal-sky.git``
+
+It's also possible to get download the zip version here_
+
+*Install*
+^^^^^^^^^
 
 #. create a new copy of the file Make.mach.generic and rename to your machine:
     ``cp Make.mach.generic Make.mach.\<your-machine\>``
@@ -31,3 +39,7 @@
      ``cd test``
      ``./run_test.sh``
 
+
+
+
+ .. _here: https://github.com/marcelo-alvarez/cal-sky/archive/master.zip

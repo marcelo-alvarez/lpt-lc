@@ -6,7 +6,7 @@
 ``cal-sky``
 ===========
 
-``cal-sky`` is a C/C++ code that takes as input cosmological initial conditions and, optionally, reionization redshifts and halo catalogs, to generate correlated large scale structure maps of the sky at multiple frequencies from the radio to submm, using Lagrangian perturbation theory. 
+cal-sky_ is a C/C++ code that takes as input cosmological initial conditions and, optionally, reionization redshifts and halo catalogs, to generate correlated large scale structure maps of the sky at multiple frequencies from the radio to submm, using Lagrangian perturbation theory. 
 
 .. toctree::
    :maxdepth: 3
@@ -15,3 +15,6 @@
    usage
    structure
    astrophysics
+
+
+.. _cal-sky: https://github.com/marcelo-alvarez/cal-sky

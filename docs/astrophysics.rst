@@ -44,7 +44,7 @@ ratio of comoving voxel volume to frequency voxel,
 
 .. math::
 
-   \delta{T}_{b,ip}=\sum_c f_c \frac{V_c}{V_{ip}},
+   \delta{T}_b^{ip}=\sum_c f_c \frac{V_c}{V_{ip}},
 
 where the frequency voxel volume is 
 
@@ -57,15 +57,21 @@ The mean over a finite frequency bin, :math:`\Delta{\nu}_j`, corresponds to a su
 
 .. math::
 
-   \delta{T}_b^{jp}=\frac{1}{\Delta{\nu}_j}\sum_i \Delta{\nu}_i\delta{T}_{b,ip}.
+   \delta{T}_b^{jp}=\frac{1}{\Delta{\nu}_j}\sum_i \Delta{\nu}_i\delta{T}_b^{ip}.
 
 Combining all these expressions together, we obtain the weighting scheme to average over comoving voxel 
 when binning into finite size frequency voxels :math:`jp`,
 
 .. math::
 
-   \delta{T}_b^{jp}=\frac{V_c}{\Delta\Omega_p\Delta{\nu}_j}\sum_c \delta{T}_{b,c}\frac{1}{\chi_c^2}\left(\frac{d\nu}{d\chi}\right)_c.
+   \delta{T}_b^{jp}=\frac{V_c}{\Delta\Omega_p\Delta{\nu}_j}\sum_c \delta{T}_{b,c}\frac{1}{\chi_c^2}\left(\frac{d\nu}{d\chi}\right)_c\equiv \frac{V_c}{\Delta\Omega_p\Delta{\nu}_j}\sum_c W_{\mathrm dtb}(\z_c).
 
+Note that the quantity outside the sum is a constant -- all pixels and comoving voxels have the same size -- while the quantity inside depends on comoving distance (or, equivalently, redshift), and hence can be precomputed in a table.  This is the origin of the line::
+
+  float wdtb = Tbmean * nu0 / r0 * sqrt(Omegam*pow((1+z),3)+Omegal)*
+      pow((1+z),-2);
+
+in the function SetRedshift2WdtbTable in tables.C. 
 
 HI in galaxies
 ''''''''''''''''

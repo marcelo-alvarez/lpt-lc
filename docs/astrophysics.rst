@@ -34,7 +34,7 @@ theory to displace mass cells to their Eulerian positions:
 
    {\mathbf x}_c = {\mathbf q}_c + D(|{\mathbf q}|){\mathbf s}^{(1)}_c({\mathbf q}_c) + D^2(|{\mathbf q}|){\mathbf s}^{(2)}_c({\mathbf q}_c),
 
-where :math:`D(z)` is the linear growth factor, :math:`{\mathbf x}` is the final, Eulerian position, :math:`{\mathbf q}` is the initial, Lagrangian, position, and :math:`{\mathbf s}^{(1)}` and :math:`{\mathbf s}^{(2)}` are the first and second order LPT displacement coefficients, respectively. Comoving distance and redhisft are used interchangeably as functional arguments. All mass elements correspond to the same comoving volume of :math:`a_{\mathrm latt}^3`, where :math:`a_{\mathrm latt}` is the comoving size of a grid cell, but are each located at a different redshift, :math:`z_c=z(|{\mathbf q}_c|)`.  For a sufficiently small frequency bin labeled with index :math:`i` of size :math:`\delta{\nu}_i`
+where :math:`D(z)` is the linear growth factor, :math:`{\mathbf x}` is the final, Eulerian position, :math:`{\mathbf q}` is the initial, Lagrangian, position, and :math:`{\mathbf s}^{(1)}` and :math:`{\mathbf s}^{(2)}` are the first and second order LPT displacement coefficients, respectively. All spatial coordinates are in comoving units and distance and redshift are used interchangeably as functional arguments. All mass elements correspond to the same comoving volume of :math:`a_{\mathrm latt}^3`, where :math:`a_{\mathrm latt}` is the comoving size of a grid cell, but are each located at a different redshift along the line of sight, :math:`z_c=z(|{\mathbf q}_c|)`.  For a sufficiently small frequency bin labeled with index :math:`i` of size :math:`\delta{\nu}_i`
 in a pixel subtending a solid angle :math:`\Delta\Omega`, the mean differential 
 brightness temperature in the corresponding frequency voxel is given by summing 
 all the values of the comoving voxels that overlap the frequency voxel, weighted by the 
@@ -62,7 +62,7 @@ when binning into finite size frequency voxels,
 
 .. math::
 
-   \delta{T}_b=\frac{V_c}{\Delta\Omega\Delta{\nu}}\sum_c \overline{\delta{T}}_b(z_c)\frac{1}{\chi_c^2}\left(\frac{d\nu}{d\chi}\right)_c\equiv \frac{V_c}{\Delta\Omega\Delta{\nu}}\sum_c \frac{W_{\mathrm dtb}(z_c)}{\chi_c^2}.
+   \delta{T}_b=\frac{a_{\mathrm latt}^3}{\Delta\Omega\Delta{\nu}}\sum_c \overline{\delta{T}}_b(z_c)\frac{1}{\chi_c^2}\left(\frac{d\nu}{d\chi}\right)_c\equiv \frac{a_{\mathrm latt}^3}{\Delta\Omega\Delta{\nu}}\sum_c \frac{W_{\mathrm dtb}(z_c)}{\chi_c^2}.
 
 Note that the quantity outside the sum is a constant -- all pixels and comoving voxels have the same size -- while the numerator of the quantity inside the sum depends only on redshift and hence can be precomputed in a table for efficiency.  This is the origin of the line::
 

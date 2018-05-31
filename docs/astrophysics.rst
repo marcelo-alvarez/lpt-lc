@@ -64,9 +64,9 @@ when binning into finite size frequency voxels :math:`jp`,
 
 .. math::
 
-   \delta{T}_b^{jp}=\frac{V_c}{\Delta\Omega_p\Delta{\nu}_j}\sum_c \delta{T}_b(z_c)\frac{1}{\chi_c^2}\left(\frac{d\nu}{d\chi}\right)_c\equiv \frac{V_c}{\Delta\Omega_p\Delta{\nu}_j}\sum_c W_{\mathrm dtb}(\z_c).
+   \delta{T}_b^{jp}=\frac{V_c}{\Delta\Omega_p\Delta{\nu}_j}\sum_c \delta{T}_b(z_c)\frac{1}{\chi_c^2}\left(\frac{d\nu}{d\chi}\right)_c\equiv \frac{V_c}{\Delta\Omega_p\Delta{\nu}_j}\sum_c \frac{W_{\mathrm dtb}(z_c)}{\chi_c^2}.
 
-Note that the quantity outside the sum is a constant -- all pixels and comoving voxels have the same size -- while the quantity inside depends on comoving distance (or, equivalently, redshift), and hence can be precomputed in a table.  This is the origin of the line::
+Note that the quantity outside the sum is a constant -- all pixels and comoving voxels have the same size -- while the numerator of the quantity inside the sum depends only on redshift and hence can be precomputed in a table for efficiency.  This is the origin of the line::
 
   float wdtb = Tbmean * nu0 / r0 * sqrt(Omegam*pow((1+z),3)+Omegal)*
       pow((1+z),-2);
@@ -76,7 +76,7 @@ in the function ``SetRedshift2WdtbTable`` in the file ``tables.C``. Note that th
   dtbfac = Wdtb * xHI * 
 	  pow(CellSize,3) / pow(r,2) * mapsize / 4. / 3.14159 / dnu;
 
-in the function ``MakeMaps`` in the file ``makemaps.C``.  Note that this quantity has units of mK and is what is added to the frequency voxel for each comoving voxel to generate the final map. 
+in the function ``MakeMaps`` in the file ``makemaps.C``.  Note that this last quantity has units of mK and is what is added to the frequency voxel for each comoving voxel to generate the final map. 
 
 HI in galaxies
 ''''''''''''''''

@@ -34,7 +34,7 @@ theory to displace mass cells to their Eulerian positions:
 
    {\mathbf x}_c = {\mathbf q}_c + D(|{\mathbf q}|){\mathbf s}^{(1)}_c({\mathbf q}_c) + D^2(|{\mathbf q}|){\mathbf s}^{(2)}_c({\mathbf q}_c),
 
-where $D(z)$ is the linear growth factor, ${\mathbf x}$ is the final, Eulerian position, and ${\mathbf q}$ is the initial, Lagrangian, position. Comoving distance and redhisft are used interchangeably as functional arguments. Each mass element corresponds to a comoving volume of :math:`V_c=a_{\mathrm latt}^3`, where `a_{\mathrm latt}` is the comoving size of a grid cell.  For a sufficiently small frequency bin labeled with index :math:`i` of size :math:`\delta{\nu}_i`
+where :math:`D(z)` is the linear growth factor, :math:`{\mathbf x}` is the final, Eulerian position, :math:`{\mathbf q}` is the initial, Lagrangian, position, and :math:`{\mathbf s}^(1)` and :math:`{\mathbf s}^(2)` are the first and second order LPT displacement coefficients, respectively. Comoving distance and redhisft are used interchangeably as functional arguments. Each mass element corresponds to a comoving volume of :math:`V_c=a_{\mathrm latt}^3`, where :math:`a_{\mathrm latt}` is the comoving size of a grid cell.  For a sufficiently small frequency bin labeled with index :math:`i` of size :math:`\delta{\nu}_i`
 in a pixel :math:`p` subtending a solid angle :math:`\Delta\Omega_p`, the mean differential 
 brightness temperature in the corresponding frequency voxel is given by summing 
 all the values of the comoving voxels that overlap the frequency voxel, weighted by the 

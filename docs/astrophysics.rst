@@ -34,35 +34,35 @@ theory to displace mass cells to their Eulerian positions:
 
    {\mathbf x}_c = {\mathbf q}_c + D(|{\mathbf q}|){\mathbf s}^{(1)}_c({\mathbf q}_c) + D^2(|{\mathbf q}|){\mathbf s}^{(2)}_c({\mathbf q}_c),
 
-where :math:`D(z)` is the linear growth factor, :math:`{\mathbf x}` is the final, Eulerian position, :math:`{\mathbf q}` is the initial, Lagrangian, position, and :math:`{\mathbf s}^(1)` and :math:`{\mathbf s}^(2)` are the first and second order LPT displacement coefficients, respectively. Comoving distance and redhisft are used interchangeably as functional arguments. Each mass element corresponds to a comoving volume of :math:`V_c=a_{\mathrm latt}^3`, where :math:`a_{\mathrm latt}` is the comoving size of a grid cell.  For a sufficiently small frequency bin labeled with index :math:`i` of size :math:`\delta{\nu}_i`
-in a pixel :math:`p` subtending a solid angle :math:`\Delta\Omega_p`, the mean differential 
+where :math:`D(z)` is the linear growth factor, :math:`{\mathbf x}` is the final, Eulerian position, :math:`{\mathbf q}` is the initial, Lagrangian, position, and :math:`{\mathbf s}^{(1)}` and :math:`{\mathbf s}^{(2)}` are the first and second order LPT displacement coefficients, respectively. Comoving distance and redhisft are used interchangeably as functional arguments. Each mass element corresponds to a comoving volume of :math:`V_c=a_{\mathrm latt}^3`, where :math:`a_{\mathrm latt}` is the comoving size of a grid cell.  For a sufficiently small frequency bin labeled with index :math:`i` of size :math:`\delta{\nu}_i`
+in a pixel subtending a solid angle :math:`\Delta\Omega`, the mean differential 
 brightness temperature in the corresponding frequency voxel is given by summing 
 all the values of the comoving voxels that overlap the frequency voxel, weighted by the 
 ratio of comoving voxel volume to frequency voxel, 
 
 .. math::
 
-   \delta{T}_b^{ip}=\sum_c f_c \frac{V_c}{V_{ip}},
+   \delta{T}_b^{i}=\sum_c f_c \frac{V_c}{V_{i}},
 
 where the frequency voxel volume is 
 
 .. math::
 
-   V_{ip}=\Delta\Omega_p\chi_i^2\frac{d\chi}{d\nu}_i\delta{\nu}_i.
+   V_{i}=\Delta\Omega\chi_i^2\frac{d\chi}{d\nu}_i\delta{\nu}_i.
 
    
-The mean over a finite frequency bin, :math:`\Delta{\nu}_j`, corresponds to a sum over infinitesimal ones, 
+The mean over a finite frequency bin, :math:`\Delta{\nu}`, corresponds to a sum over infinitesimal ones, 
 
 .. math::
 
-   \delta{T}_b^{jp}=\frac{1}{\Delta{\nu}_j}\sum_i \Delta{\nu}_i\delta{T}_b^{ip}.
+   \delta{T}_b=\frac{1}{\Delta{\nu}_}\sum_i \delta{\nu}_i\delta{T}_b^{i}.
 
-Combining all these expressions together, we obtain the weighting scheme to average over comoving voxel 
-when binning into finite size frequency voxels :math:`jp`,
+Combining all these expressions together, we obtain the weighting scheme to sum over comoving voxels 
+when binning into finite size frequency voxels,
 
 .. math::
 
-   \delta{T}_b^{jp}=\frac{V_c}{\Delta\Omega_p\Delta{\nu}_j}\sum_c \delta{T}_b(z_c)\frac{1}{\chi_c^2}\left(\frac{d\nu}{d\chi}\right)_c\equiv \frac{V_c}{\Delta\Omega_p\Delta{\nu}_j}\sum_c \frac{W_{\mathrm dtb}(z_c)}{\chi_c^2}.
+   \delta{T}_b=\frac{V_c}{\Delta\Omega_p\Delta{\nu}}\sum_c \overline{\delta{T}}_b(z_c)\frac{1}{\chi_c^2}\left(\frac{d\nu}{d\chi}\right)_c\equiv \frac{V_c}{\Delta\Omega\Delta{\nu}}\sum_c \frac{W_{\mathrm dtb}(z_c)}{\chi_c^2}.
 
 Note that the quantity outside the sum is a constant -- all pixels and comoving voxels have the same size -- while the numerator of the quantity inside the sum depends only on redshift and hence can be precomputed in a table for efficiency.  This is the origin of the line::
 

@@ -28,6 +28,7 @@ Patchy Reionization
 ''''''''''''''
 The 21-cm signal from patchy reionization is obtained, in the Ts >> Tcmb limit, by using Lagrangian perturbation theory to displace mass elements to their Eulerian positions:
 .. math::
+   
    x_i = q_i + s^(1)_i(q_i)
 
 HI in galaxies

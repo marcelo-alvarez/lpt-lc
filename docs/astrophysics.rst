@@ -29,7 +29,7 @@ Patchy Reionization
 
 The 21-cm signal from patchy reionization is obtained, in the $T_s >> T_{cmb}$ limit, by using Lagrangian perturbation 
 theory to displace mass cells to their Eulerian positions:
-$${\mathbf x}_c = {\mathbf q}_c + {\mathbf s}^{(1)}_c({\mathbf q}_c)$$. 
+$${\mathbf x}_c = {\mathbb q}_c + {\mathbb s}^{(1)}_c({\mathbb q}_c)$$. 
 Each mass element originate from a comoving volume of $a_{\rm latt}^3$. 
 For a sufficiently small frequency bin labeled with index $i$ of size $\delta{\nu}_i$ 
 in a pixel $p$ subtending a solid angle $\Delta\Omega_p$, the mean differential 

@@ -24,7 +24,7 @@ void usage(){
     printf("\n   -y center y in Mpc    [default = 100 Mpc]");
     printf("\n   -z center z in Mpc    [default = 100 Mpc]");
     printf("\n   -r initial redshift   [default = 0]");
-    printf("\n   -l LPT code, [l]LPT   [default = 1 --> 1LPT]");
+    printf("\n   -l LPT code, [l]LPT   [default = 1 --> 1LPT; 0 --> density file is signal]");
     printf("\n   -k lensing source z   [default = 1100]");
     printf("\n   -e evolution code     [default = 1 --> evolution");
     printf("\n   -b binary map only    [default = 0 --> fits and binary]");

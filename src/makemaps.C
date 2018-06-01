@@ -404,9 +404,6 @@ void MakeMaps()
       if(clParameters.evolve == 0) D = 1;
       float D2     = 3. / 7. * D * D;
 
-      if(iLPT < 1) D  = 0;
-      if(iLPT < 2) D2 = 0;
-
       long pixel, tpixel;
       
       float xE,yE,zE;
@@ -414,9 +411,17 @@ void MakeMaps()
       // Displacements
       float sx,sy,sz;
 
-      sx = D * sx1[index_dv] + D2 * sx2[index_dv] ;
-      sy = D * sy1[index_dv] + D2 * sy2[index_dv] ;
-      sz = D * sz1[index_dv] + D2 * sz2[index_dv] ;
+      sx = 0; sy = 0; sz = 0;
+      if(iLPT > 0) {
+	sx += D * sx1[index_dv] ; 
+	sy += D * sy1[index_dv] ; 
+	sz += D * sz1[index_dv] ;
+      } 
+      if(iLPT > 1) {
+	sx += D2 * sx2[index_dv] ;
+	sy += D2 * sy2[index_dv] ;
+	sz += D2 * sz2[index_dv] ;
+      }
 
       // Velocities
       float vx,vy,vz;
@@ -453,11 +458,15 @@ void MakeMaps()
       vec[2] = xE; vec[1] = yE; vec[0] = zE; // x-z flipped
       vec2pix_nest(Parameters.NSide, vec, &pixel); tpixel = pixel + inu * mapsize;      
 
-      if(Parameters.DoMap[KAPCODE]==1) kapmapl[ pixel] += kapfac ; // * (1-halomask[index_dv]);
-      if(Parameters.DoMap[TAUCODE]==1) taumapl[ pixel] += taufac ; // * (1-halomask[index_dv]);
-      if(Parameters.DoMap[KSZCODE]==1) kszmapl[ pixel] += kszfac ; // * (1-halomask[index_dv]);
-      if(Parameters.DoMap[CIBCODE]==1) cibmapl[ pixel] += cibfac ; // * (1-halomask[index_dv]);
-      if(Parameters.DoMap[DTBCODE]==1) dtbmapl[tpixel] += dtbfac ; // * (1-halomask[index_dv]);
+      // Add relative fluctuation weight to cell for Eulerian mode
+      float eulerian_signal = 1;
+      if(iLPT == 0) eulerian_signal = delta1[index_dv];
+      
+      if(Parameters.DoMap[KAPCODE]==1) kapmapl[ pixel] += kapfac * eulerian_signal ; // * (1-halomask[index_dv]);
+      if(Parameters.DoMap[TAUCODE]==1) taumapl[ pixel] += taufac * eulerian_signal ; // * (1-halomask[index_dv]);
+      if(Parameters.DoMap[KSZCODE]==1) kszmapl[ pixel] += kszfac * eulerian_signal ; // * (1-halomask[index_dv]);
+      if(Parameters.DoMap[CIBCODE]==1) cibmapl[ pixel] += cibfac * eulerian_signal ; // * (1-halomask[index_dv]);
+      if(Parameters.DoMap[DTBCODE]==1) dtbmapl[tpixel] += dtbfac * eulerian_signal ; // * (1-halomask[index_dv]);
       
     }
     }

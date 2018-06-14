@@ -102,10 +102,12 @@ void MakeMaps()
     zmax = Nu2Redshift(nu1);
     zmin = Nu2Redshift(nu2);
     if(myid==0) printf("zmin=%f zmax=%f nu1=%f nu2=%f\n",zmin,zmax,nu1,nu2);
+  }else{
+    if(myid==0) printf("zmin=%f zmax=%f\n",zmin,zmax);
   }
   float rmin = Redshift2Float(zmin,Redshift2RadiusTable);
   float rmax = Redshift2Float(zmax,Redshift2RadiusTable);
-  int nperiodic = (int)(2*rmax / BoxSize + 2);
+  int nperiodic = (int)(2*rmax / BoxSize + 1);
   int tiledbox = nperiodic * BoxSize ; 
   if(myid==0) printf("rmin = %f rmax = %f nperiodic = %d BoxSize = %f tmapsize=%d \n",rmin,rmax,nperiodic,BoxSize,tmapsize);
 

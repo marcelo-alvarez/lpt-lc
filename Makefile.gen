@@ -5,20 +5,17 @@
 FFTLIB = -L$(FFTW2_PATH)/lib -lsrfftw_mpi -lsfftw_mpi -lsrfftw -lsfftw
 FFTINC = -I$(FFTW2_PATH)/include 
 
-#FFTLIB = -L$(FFTW2_PATH)/lib -L$(FFTW3_PATH)/lib -lsrfftw_mpi -lsfftw_mpi -lsrfftw -lsfftw
-#FFTINC = -I$(FFTW2_PATH)/include -I$(FFTW3_PATH)/include 
-
 CFTLIB = -L$(CFITS_PATH)/lib -lcfitsio
 CFTINC = -I$(CFITS_PATH)/include
 
 GSLLIB = -L$(GSL_PATH)/lib -lgsl -lgslcblas
 GSLINC = -I$(GSL_PATH)/include
 
-CURLINC = -I$(CURL_PATH)/include
-CURLLIB = -L$(CURL_PATH)/lib -lcurl
+#CURLINC = -I$(CURL_PATH)/include
+#CURLLIB = -L$(CURL_PATH)/lib -lcurl
 
-LIB = $FFTLIB $CFTLIB $GSLLIB $CURLLIB
-INC = $FFTINC $CFTINC $GSLINC $CURLINC
+LIB = $FFTLIB $CFTLIB $GSLLIB #$CURLLIB
+INC = $FFTINC $CFTINC $GSLINC #$CURLINC
  
 # OBJECT FILES
 srcdir  = ./src
